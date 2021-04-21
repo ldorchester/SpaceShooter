@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private float _speed = 4f;
     [SerializeField] private float _fireRate = 0.25f;
+    [SerializeField] private int _shieldPower;
     private float _canFire = -1f;
     [SerializeField] private int _lives = 3;
     [SerializeField] private GameObject _laserPrefab;
@@ -43,6 +44,9 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        //Shield method to take 3 hits
+        ShieldExtra();
+
         //User Input & Movement
         CalculateMovement();
 
@@ -78,8 +82,10 @@ public class Player : MonoBehaviour
 
     public void ShieldActive()
     {
-        _isShieldActive = true;
         _shieldSprite.SetActive(true);
+        _shieldPower = 3;
+        _isShieldActive = true;
+        //_shieldSprite.SetActive(true);
     }
 
     public void SpeedActive()
@@ -123,23 +129,42 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void ShieldExtra()
+    {
+        switch (_shieldPower)
+        {
+            case 2:
+                _shieldSprite.GetComponent<Renderer>().material.color = Color.green;
+                break;
+            case 1:
+                _shieldSprite.GetComponent<Renderer>().material.color = Color.red;
+                break;
+            case 0:
+                _shieldSprite.SetActive(false);
+                _isShieldActive = false;
+                break;
+        }
+    }
+
     public void Damage()
     {
         if (_isShieldActive == true)
         {
-            _isShieldActive = false;
-            _shieldSprite.SetActive(false);
-            return;
+            _shieldPower--;
+        }
+        
+
+        if (_isShieldActive == false)
+        {
+            _lives--;
         }
 
-        _lives --;
-
-        if (_lives == 2)
+        else if (_lives == 2)
         {
             _leftEngine.SetActive(true);
         }
  
-        if (_lives == 1)
+        else if (_lives == 1)
         {
             _rightEngine.SetActive(true);
         }
@@ -152,7 +177,7 @@ public class Player : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-    
+
     void FireLaser()
     {
         _canFire = Time.time + _fireRate;
