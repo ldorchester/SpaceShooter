@@ -1779,13 +1779,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 5
   _fireRate: 0.5
+  _shieldPower: 0
   _lives: 3
   _laserPrefab: {fileID: 2422276146017524348, guid: e44707f4d90e6ab44b77cabd3fec3fcb, type: 3}
   _tripleShotPrefab: {fileID: 3788241855065193652, guid: 330a025ec8b4c484a91bd07e830dd3ed, type: 3}
   _shieldSprite: {fileID: 111004930}
   _leftEngine: {fileID: 427684217}
   _rightEngine: {fileID: 90679362}
-  ammo: 20
+  ammo: 15
   _score: 0
   _laserClip: {fileID: 8300000, guid: 7d450fe2239ce8b4095aa654767de393, type: 3}
   _explosionClip: {fileID: 8300000, guid: cb4f2f0f8f9eb9741bdf6b15e98136e9, type: 3}

@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _leftEngine;
     [SerializeField] private GameObject _rightEngine;
     private SpawnManager _spawnManager;
-    [SerializeField] public int ammo = 20;
+    [SerializeField] public int ammo = 15;
     [SerializeField] private int _score;
     private UI_Manager _uiManager;
     [SerializeField] private AudioClip _laserClip;
@@ -76,7 +76,7 @@ public class Player : MonoBehaviour
     
     public void AmmoPowerUp()
     {
-        ammo = 20;
+        ammo = 15;
         _uiManager.UpdateAmmo(ammo);
     }
 

@@ -19,7 +19,7 @@ public class UI_Manager : MonoBehaviour
     void Start()
     {
         _scoreText.text = "Score: " + 0;
-        _laserAmmo.text = "Lasers: " + 20;
+        _laserAmmo.text = "Lasers: " + 15;
 
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
         if (_gameManager == null)
@@ -31,7 +31,7 @@ public class UI_Manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      
+       
     }
 
     public void UpdateScore(int playerScore)
@@ -42,6 +42,14 @@ public class UI_Manager : MonoBehaviour
     public void UpdateAmmo(int updateAmmo)
     {
         _laserAmmo.text = "Laser: " + updateAmmo;
+        if (updateAmmo <= 5)
+        {
+            _laserAmmo.GetComponent<Text>().color = Color.red;
+        }
+        else
+        {
+            _laserAmmo.GetComponent<Text>().color = Color.white;
+        }
     }
 
     public void UpdateLives(int currentlives)
@@ -64,7 +72,7 @@ public class UI_Manager : MonoBehaviour
 
     private IEnumerator GameOverFlickerRoutine()
     {
-        while(_gameOverText == true)
+        while (_gameOverText == true)
         {
             _gameOverText.text = "GAME OVER";
             yield return new WaitForSeconds(.5f);
