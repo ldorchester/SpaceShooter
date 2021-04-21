@@ -82,10 +82,9 @@ public class Player : MonoBehaviour
 
     public void ShieldActive()
     {
-        _shieldSprite.SetActive(true);
         _shieldPower = 3;
         _isShieldActive = true;
-        //_shieldSprite.SetActive(true);
+        _shieldSprite.SetActive(true);
     }
 
     public void SpeedActive()
