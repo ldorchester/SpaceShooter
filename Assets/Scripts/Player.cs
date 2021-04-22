@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float _speed = 4f;
     [SerializeField] private float _fireRate = 0.25f;
     [SerializeField] private int _shieldPower;
+    [SerializeField] private int _hits;
     private float _canFire = -1f;
     [SerializeField] private int _lives = 3;
     [SerializeField] private GameObject _laserPrefab;
@@ -59,6 +60,9 @@ public class Player : MonoBehaviour
         //Wrap player when they enter side of screen
         PlayerWrap();
 
+        //Check to see how many lives the player has and where the engine damage is at
+        CheckPlayerHealth();
+
         //Check to see if player is firing and spawn a laser & cool down so player can only fire 0.25.
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire && ammo > 0)
         {
@@ -67,7 +71,29 @@ public class Player : MonoBehaviour
     }
 
 
+
     //-------------------------Custom Methods Section--------------------------------
+    public void CheckPlayerHealth()
+    {
+        if (_lives == 1)
+        {
+            _leftEngine.SetActive(true);
+            _rightEngine.SetActive(true);
+        }
+
+        if (_lives == 2)
+        {
+            _leftEngine.SetActive(true);
+            _rightEngine.SetActive(false);
+        }
+
+        if (_lives == 3)
+        {
+            _leftEngine.SetActive(false);
+            _rightEngine.SetActive(false);
+        }
+    }
+    
     public void AddToScore(int points)
     {
         _score += points;
@@ -114,18 +140,12 @@ public class Player : MonoBehaviour
 
     public void HealthPowerUp()
     {
-        if (_lives == 1)
+        if (_lives == 3)
         {
-            _lives++;
-            _uiManager.UpdateLives(_lives);
-            _leftEngine.SetActive(false);
+            return;
         }
-        else if (_lives == 2)
-        {
-            _lives++;
-            _uiManager.UpdateLives(_lives);
-            _rightEngine.SetActive(false);
-        }
+        _lives++;
+        _uiManager.UpdateLives(_lives);
     }
 
     private void ShieldExtra()
@@ -151,30 +171,17 @@ public class Player : MonoBehaviour
         {
             _shieldPower--;
         }
-        
 
         if (_isShieldActive == false)
         {
             _lives--;
+            _uiManager.UpdateLives(_lives);
         }
-
-        else if (_lives == 2)
-        {
-            _leftEngine.SetActive(true);
-        }
- 
-        else if (_lives == 1)
-        {
-            _rightEngine.SetActive(true);
-        }
-
-        _uiManager.UpdateLives(_lives);
-
-        if (_lives <= 0)
-        {
+       if (_lives <= 0)
+       {
             _spawnManager.OnPlayerDeath();
             Destroy(this.gameObject);
-        }
+       }
     }
 
     void FireLaser()
