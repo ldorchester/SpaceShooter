@@ -6,7 +6,6 @@ using UnityEngine;
 public class Missile : MonoBehaviour
 {
     public Transform _target;
-
     private Player _player;
     private Rigidbody2D _rb;
     private Animator _anim;
