@@ -5,6 +5,7 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] GameObject _enemyPrefab;
+    [SerializeField] GameObject _missilePowerUpPrefab;
     [SerializeField] GameObject _asteroidPrefab;
     [SerializeField] GameObject[] powerups;
     [SerializeField] GameObject _enemyContainer;
@@ -47,8 +48,17 @@ public class SpawnManager : MonoBehaviour
         while (_stopSpawning == false)
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-9, 9), 7, 0);
+
+            int randomMissile = Random.Range(1, 5);
+            if (randomMissile == 1)
+            {
+                Vector3 spawn = new Vector3(Random.Range(-9, 9), 7, 0);
+                Instantiate(_missilePowerUpPrefab, spawn, Quaternion.identity);
+            }
+
             int randomPowerup = Random.Range(0, 5);
             Instantiate(powerups[randomPowerup], posToSpawn, Quaternion.identity);
+
             yield return new WaitForSeconds(Random.Range(3, 7));
         }
     }

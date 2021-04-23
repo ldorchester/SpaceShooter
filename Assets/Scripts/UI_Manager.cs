@@ -8,6 +8,7 @@ public class UI_Manager : MonoBehaviour
 
     [SerializeField] private Text _scoreText;
     [SerializeField] private Text _laserAmmo;
+    [SerializeField] private Text _missileAmmo;
     [SerializeField] private Sprite[] _liveSprites;
     [SerializeField] private Image _livesImg;
     [SerializeField] private Text _gameOverText;
@@ -49,6 +50,19 @@ public class UI_Manager : MonoBehaviour
         else
         {
             _laserAmmo.GetComponent<Text>().color = Color.white;
+        }
+    }
+
+    public void UpdateMissileAmmo(int updateMissileAmmo)
+    {
+        _missileAmmo.text = "Missiles: " + updateMissileAmmo;
+        if (updateMissileAmmo <= 2)
+        {
+            _missileAmmo.GetComponent<Text>().color = Color.red;
+        }
+        else
+        {
+            _missileAmmo.GetComponent<Text>().color = Color.white;
         }
     }
 

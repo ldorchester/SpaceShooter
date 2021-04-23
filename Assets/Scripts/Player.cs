@@ -11,15 +11,18 @@ public class Player : MonoBehaviour
     private float _canFire = -1f;
     [SerializeField] private int _lives = 3;
     [SerializeField] private GameObject _laserPrefab;
+    [SerializeField] private GameObject _Missiles;
     [SerializeField] private GameObject _tripleShotPrefab;
     [SerializeField] private GameObject _shieldSprite;
     [SerializeField] private GameObject _leftEngine;
     [SerializeField] private GameObject _rightEngine;
     private SpawnManager _spawnManager;
     [SerializeField] public int ammo = 15;
+    [SerializeField] public int _missiles = 0;
     [SerializeField] private int _score;
     private UI_Manager _uiManager;
     [SerializeField] private AudioClip _laserClip;
+    [SerializeField] private AudioClip _missileClip;
     [SerializeField] private AudioClip _explosionClip;
     [SerializeField] private AudioSource _audioSource;
 
@@ -45,6 +48,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        
         //Shield method to take 3 hits
         ShieldExtra();
 
@@ -68,11 +72,18 @@ public class Player : MonoBehaviour
         {
             FireLaser();
         }
+
+        //Check to see if player is firing secondary missile
+        if (Input.GetKeyDown(KeyCode.E) && Time.time > _canFire && _missiles > 0)
+        {
+            FireMissile();
+        }
     }
 
 
 
     //-------------------------Custom Methods Section--------------------------------
+
     public void CheckPlayerHealth()
     {
         if (_lives == 1)
@@ -132,6 +143,12 @@ public class Player : MonoBehaviour
         StartCoroutine(TripleShotPowerDownRoutine());
     }
 
+    public void Missiles()
+    {
+        _missiles = 5;
+        _uiManager.UpdateMissileAmmo(_missiles);
+    }
+
     IEnumerator TripleShotPowerDownRoutine()
     {
         yield return new WaitForSeconds(5f);
@@ -182,6 +199,37 @@ public class Player : MonoBehaviour
             _spawnManager.OnPlayerDeath();
             Destroy(this.gameObject);
        }
+    }
+    public Transform GetClosestEnemy(GameObject[] enemies)
+    {
+        Transform bestTarget = null;
+        float closestDistanceSqr = Mathf.Infinity;
+        Vector3 currentPosition = transform.position;
+        foreach (GameObject potentialTarget in enemies)
+        {
+            Vector3 directionToTarget = potentialTarget.transform.position - currentPosition;
+            float dSqrToTarget = directionToTarget.sqrMagnitude;
+            if (dSqrToTarget < closestDistanceSqr)
+            {
+                closestDistanceSqr = dSqrToTarget;
+                bestTarget = potentialTarget.transform;
+            }
+        }
+
+        return bestTarget;
+    }
+    void FireMissile()
+    {
+        GameObject[] _enemiesActive = GameObject.FindGameObjectsWithTag("Enemy");
+        _canFire = Time.time + _fireRate;
+        _missiles--;
+        _uiManager.UpdateMissileAmmo(_missiles);
+        Transform target = GetClosestEnemy(_enemiesActive);
+        GameObject missile = Instantiate(_Missiles, transform.position, Quaternion.identity);
+        missile.GetComponent<Missile>().MissileTarget(target);
+
+        _audioSource.clip = _missileClip;
+        _audioSource.Play();
     }
 
     void FireLaser()

@@ -137,6 +137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 3
   powerupID: 0
+  _missilePowerup: {fileID: 6320511093884585034, guid: 2cc08e405b981e446be38decb6930aed, type: 3}
   _audioClip: {fileID: 8300000, guid: 31fd028d19c276c4c9b84508b5808798, type: 3}
 --- !u!95 &1512290691
 Animator:

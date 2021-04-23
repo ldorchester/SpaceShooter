@@ -61,6 +61,14 @@ public class Enemy : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.tag == "Missile")
+        {
+            Destroy(other.gameObject);
+            _audioSource.Play();
+            _anim.SetTrigger("OnEnemyDeath");
+            Destroy(this.gameObject, 2f);
+        }
+
         //If Enemy Collides with Player
         if (other.tag == "Player")
         {
