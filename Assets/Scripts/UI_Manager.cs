@@ -21,6 +21,7 @@ public class UI_Manager : MonoBehaviour
     {
         _scoreText.text = "Score: " + 0;
         _laserAmmo.text = "Lasers: " + 15;
+        _missileAmmo.text = "Missiles: " + 0;
 
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
         if (_gameManager == null)
