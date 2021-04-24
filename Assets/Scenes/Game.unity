@@ -1890,6 +1890,7 @@ MonoBehaviour:
   _missileClip: {fileID: 8300000, guid: ca037d34be75ffe48b8f4bb647bf4ca3, type: 3}
   _explosionClip: {fileID: 8300000, guid: cb4f2f0f8f9eb9741bdf6b15e98136e9, type: 3}
   _audioSource: {fileID: 1897134325}
+  cameraShake: {fileID: 963194230}
 --- !u!212 &1897134322
 SpriteRenderer:
   m_ObjectHideFlags: 0
