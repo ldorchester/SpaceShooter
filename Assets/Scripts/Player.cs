@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     [SerializeField] private AudioClip _missileClip;
     [SerializeField] private AudioClip _explosionClip;
     [SerializeField] private AudioSource _audioSource;
+    [SerializeField] public CameraShake cameraShake;
 
     private bool _isTripleShotActive = false;
     private bool _isSpeedActive = false;
@@ -191,6 +192,7 @@ public class Player : MonoBehaviour
 
         if (_isShieldActive == false)
         {
+            StartCoroutine(cameraShake.Shake(.15f, .4f));
             _lives--;
             _uiManager.UpdateLives(_lives);
         }
@@ -277,9 +279,10 @@ public class Player : MonoBehaviour
         }
         else
         {
-            _speed = 4f;
+           _speed = 4f;
         }
     }
+
     void PlayerWrap()
     {
         float sideBoundsx = 10.75f;

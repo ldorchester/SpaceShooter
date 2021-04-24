@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class UI_Manager : MonoBehaviour
 {
-
     [SerializeField] private Text _scoreText;
     [SerializeField] private Text _laserAmmo;
     [SerializeField] private Text _missileAmmo;
@@ -13,7 +12,7 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] private Image _livesImg;
     [SerializeField] private Text _gameOverText;
     [SerializeField] private Text _restartText;
-    private Player player;
+    private Player _player;
     private GameManager _gameManager;
 
     // Start is called before the first frame update
@@ -29,6 +28,8 @@ public class UI_Manager : MonoBehaviour
             Debug.LogError("Game Manager is NULL");
         }
     }
+
+    
 
     // Update is called once per frame
     void Update()
