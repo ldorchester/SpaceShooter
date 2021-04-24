@@ -49,7 +49,11 @@ public class SpawnManager : MonoBehaviour
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-9, 9), 7, 0);
 
+<<<<<<< HEAD
             int randomMissile = Random.Range(0, 5);
+=======
+            int randomMissile = Random.Range(1, 10);
+>>>>>>> camerashake
             if (randomMissile == 1)
             {
                 Vector3 spawn = new Vector3(Random.Range(-9, 9), 7, 0);
