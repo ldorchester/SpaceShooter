@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public float maxThruster = 100;
+    public float currentThruster;
+    public ThrusterBar thrusterBar;
     [SerializeField] private float _speed = 4f;
     [SerializeField] private float _fireRate = 0.25f;
     [SerializeField] private int _shieldPower;
@@ -45,6 +48,9 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("The Spawn Manager is NULL.");
         }
+
+        currentThruster = maxThruster;
+        thrusterBar.SetMaxThruster(maxThruster);
     }
 
     void Update()
@@ -57,7 +63,7 @@ public class Player : MonoBehaviour
         CalculateMovement();
 
         //User Input Shift Key for SpeedBoost
-        SpeedBoost();
+       // SpeedBoost();
 
         //Stop player from leaving screen
         TopBottomBounds();
@@ -79,11 +85,37 @@ public class Player : MonoBehaviour
         {
             FireMissile();
         }
+
+        //Check to see if player is hitting shift for speed boost
+        if (Input.GetKey(KeyCode.LeftShift) && (currentThruster != 0) && (_isSpeedActive != true))
+        {
+            SpeedBoost(.25f);
+        }
+        else 
+        {
+           _speed = 4f;
+            if (!Input.GetKey(KeyCode.LeftShift) && (currentThruster < 100f))
+            {
+                currentThruster = currentThruster + .5f;
+                thrusterBar.SetThruster(currentThruster);
+            }
+        }
     }
 
 
 
     //-------------------------Custom Methods Section--------------------------------
+
+    void SpeedBoost(float thrusters)
+    {
+        _speed = 6f;
+        currentThruster -= thrusters;
+        thrusterBar.SetThruster(currentThruster);
+        if (currentThruster <= 0)
+        {
+            currentThruster = 0;
+        }
+    }
 
     public void CheckPlayerHealth()
     {
@@ -271,17 +303,17 @@ public class Player : MonoBehaviour
         }
     }
 
-    void SpeedBoost()
-    {
-        if(Input.GetKey(KeyCode.LeftShift))
-        {
-            _speed = 6f;
-        }
-        else
-        {
-           _speed = 4f;
-        }
-    }
+    //void SpeedBoost()
+    //{
+    //    if(Input.GetKey(KeyCode.LeftShift))
+    //    {
+    //        _speed = 6f;
+    //    }
+    //    else
+    //    {
+    //       _speed = 4f;
+    //    }
+    //}
 
     void PlayerWrap()
     {
