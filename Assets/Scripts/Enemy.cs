@@ -5,7 +5,9 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _speed = 4f;
+    private int _randomMove;
     private AudioSource _audioSource;
+    [SerializeField] SpawnManager _spawnManager;
     private Player _player;
     private Animator _anim;
     [SerializeField] private GameObject _laserPrefab;
@@ -26,14 +28,60 @@ public class Enemy : MonoBehaviour
             Debug.LogError("The Animator is NULL");
         }
 
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
+        if (_spawnManager == null)
+        {
+            Debug.LogError("The Spawn Manager is NULL.");
+        }
+
         _audioSource = GetComponent<AudioSource>();
+
+        _randomMove = _spawnManager.CalculateRandomEnemyMovement();
+
     }
+   
 
     // Update is called once per frame
     void Update()
     {
         CalculateMovement();
+        FireLasers();
+        
+    }
 
+    //-----------------------------Custom Methods Below ------------------------------------------------
+    void CalculateMovement()
+    {
+        switch (_randomMove)
+        {
+            case 0:
+                transform.Translate(new Vector3(0, -1, 0) * _speed * Time.deltaTime);
+                break;
+            case 1:
+                transform.Translate(new Vector3(1, -1, 0) * _speed * Time.deltaTime);
+                break;
+            case 2:
+                transform.Translate(new Vector3(-1, -1, 0) * _speed * Time.deltaTime);
+                break;
+            default:
+               // Debug.Log("Switch Enemy Random Move Value");
+                break;
+        }
+        if (transform.position.y <= -6.5f)
+        {
+            float xRandomRespawn = Random.Range(-9, 9);
+            transform.position = new Vector3(xRandomRespawn, 4.5f, 0);
+        }
+
+        // if (transform.position.y <= -6.5f)
+        // {
+        //     float xRandomRespawn = Random.Range(-9, 9);
+        //     transform.position = new Vector3(xRandomRespawn, 4.5f, 0);
+        // }
+    }
+
+    void FireLasers()
+    {
         if (Time.time > _canFire)
         {
             _fireRate = Random.Range(3f, 7f);
@@ -41,21 +89,10 @@ public class Enemy : MonoBehaviour
             GameObject enemyLaser = Instantiate(_laserPrefab, transform.position + new Vector3(0, -0.2f, 0), Quaternion.identity);
             Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
 
-           for (int i = 0; i <  lasers.Length; i++)
-           {
-           lasers[i].AssignEnemyLaser();
-           }
-        }
-    }
-
-    void CalculateMovement()
-    {
-        transform.Translate(Vector3.down * _speed * Time.deltaTime);
-
-        if (transform.position.y <= -6.5f)
-        {
-            float xRandom = Random.Range(-9, 9);
-            transform.position = new Vector3(xRandom, 4.5f, 0);
+            for (int i = 0; i < lasers.Length; i++)
+            {
+                lasers[i].AssignEnemyLaser();
+            }
         }
     }
 

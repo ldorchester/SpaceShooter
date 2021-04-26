@@ -10,6 +10,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] GameObject[] powerups;
     [SerializeField] GameObject _enemyContainer;
     private bool _stopSpawning = false;
+    public int _randomNumber;
     
     void Start()
     {
@@ -36,12 +37,18 @@ public class SpawnManager : MonoBehaviour
             if (getRandomNumber != 1)
             {
                 GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
+                //_randomNumber = Random.Range(0, 4);
+                CalculateRandomEnemyMovement();
                 newEnemy.transform.parent = _enemyContainer.transform;
             }
             yield return new WaitForSeconds(5.0f);
         }
-
     }
+
+   public int CalculateRandomEnemyMovement()
+   {
+        return Random.Range(0, 4);
+   }
 
     IEnumerator SpawnPowerupRoutine()
     {
@@ -49,11 +56,8 @@ public class SpawnManager : MonoBehaviour
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-9, 9), 7, 0);
 
-<<<<<<< HEAD
-            int randomMissile = Random.Range(0, 5);
-=======
             int randomMissile = Random.Range(1, 10);
->>>>>>> camerashake
+
             if (randomMissile == 1)
             {
                 Vector3 spawn = new Vector3(Random.Range(-9, 9), 7, 0);
