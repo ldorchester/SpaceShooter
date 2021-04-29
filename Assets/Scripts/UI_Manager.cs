@@ -20,7 +20,7 @@ public class UI_Manager : MonoBehaviour
     {
         _scoreText.text = "Score: " + 0;
         _laserAmmo.text = "Lasers: " + 15;
-        _missileAmmo.text = "Missiles: " + 0;
+        _missileAmmo.text = "Missiles";
 
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
         if (_gameManager == null)
@@ -55,7 +55,7 @@ public class UI_Manager : MonoBehaviour
         }
     }
 
-    public void UpdateMissileAmmo(int updateMissileAmmo)
+  /*  public void UpdateMissileAmmo(int updateMissileAmmo)
     {
         _missileAmmo.text = "Missiles: " + updateMissileAmmo;
         if (updateMissileAmmo <= 2)
@@ -67,7 +67,7 @@ public class UI_Manager : MonoBehaviour
             _missileAmmo.GetComponent<Text>().color = Color.white;
         }
     }
-
+  */
     public void UpdateLives(int currentlives)
     {
         _livesImg.sprite = _liveSprites[currentlives];

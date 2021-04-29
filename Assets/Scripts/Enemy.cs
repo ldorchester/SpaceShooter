@@ -34,9 +34,9 @@ public class Enemy : MonoBehaviour
             Debug.LogError("The Spawn Manager is NULL.");
         }
 
-        _audioSource = GetComponent<AudioSource>();
-
         _randomMove = _spawnManager.CalculateRandomEnemyMovement();
+
+        _audioSource = GetComponent<AudioSource>();
 
     }
    
@@ -52,6 +52,7 @@ public class Enemy : MonoBehaviour
     //-----------------------------Custom Methods Below ------------------------------------------------
     void CalculateMovement()
     {
+
         switch (_randomMove)
         {
             case 0:
@@ -64,7 +65,7 @@ public class Enemy : MonoBehaviour
                 transform.Translate(new Vector3(-1, -1, 0) * _speed * Time.deltaTime);
                 break;
             default:
-               // Debug.Log("Switch Enemy Random Move Value");
+                transform.position = new Vector3(0, 0, 0);
                 break;
         }
         if (transform.position.y <= -6.5f)

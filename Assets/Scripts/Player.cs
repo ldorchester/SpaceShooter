@@ -11,9 +11,15 @@ public class Player : MonoBehaviour
     [SerializeField] private float _fireRate = 0.25f;
     [SerializeField] private int _shieldPower;
     [SerializeField] private int _hits;
+    private int _numberOfMissiles;
     private float _canFire = -1f;
     [SerializeField] private int _lives = 3;
     [SerializeField] private GameObject _laserPrefab;
+    [SerializeField] private GameObject _missile1;
+    [SerializeField] private GameObject _missile2;
+    [SerializeField] private GameObject _missile3;
+    [SerializeField] private GameObject _missile4;
+    [SerializeField] private GameObject _missile5;
     [SerializeField] private GameObject _Missiles;
     [SerializeField] private GameObject _tripleShotPrefab;
     [SerializeField] private GameObject _shieldSprite;
@@ -37,6 +43,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        _numberOfMissiles = 5;
         _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
         if (_uiManager == null)
         {
@@ -74,6 +81,9 @@ public class Player : MonoBehaviour
         //Check to see how many lives the player has and where the engine damage is at
         CheckPlayerHealth();
 
+        //Check how many missiles player has
+        NumberOfMissiles();
+
         //Check to see if player is firing and spawn a laser & cool down so player can only fire 0.25.
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire && ammo > 0)
         {
@@ -81,7 +91,7 @@ public class Player : MonoBehaviour
         }
 
         //Check to see if player is firing secondary missile
-        if (Input.GetKeyDown(KeyCode.E) && Time.time > _canFire && _missiles > 0)
+        if (Input.GetKeyDown(KeyCode.E) && Time.time > _canFire && _numberOfMissiles > 0)
         {
             FireMissile();
         }
@@ -178,8 +188,8 @@ public class Player : MonoBehaviour
 
     public void Missiles()
     {
-        _missiles = 5;
-        _uiManager.UpdateMissileAmmo(_missiles);
+        _numberOfMissiles = 5;
+       // _uiManager.UpdateMissileAmmo(_missiles);
     }
 
     IEnumerator TripleShotPowerDownRoutine()
@@ -256,14 +266,67 @@ public class Player : MonoBehaviour
     {
         GameObject[] _enemiesActive = GameObject.FindGameObjectsWithTag("Enemy");
         _canFire = Time.time + _fireRate;
-        _missiles--;
-        _uiManager.UpdateMissileAmmo(_missiles);
+        //_missiles--;
+        _numberOfMissiles--;
+        //_uiManager.UpdateMissileAmmo(_missiles);
         Transform target = GetClosestEnemy(_enemiesActive);
         GameObject missile = Instantiate(_Missiles, transform.position, Quaternion.identity);
         missile.GetComponent<Missile>().MissileTarget(target);
 
         _audioSource.clip = _missileClip;
         _audioSource.Play();
+    }
+
+    void NumberOfMissiles()
+    {
+        if (_numberOfMissiles == 5)
+        {
+            _missile1.SetActive(true);
+            _missile2.SetActive(true);
+            _missile3.SetActive(true);
+            _missile4.SetActive(true);
+            _missile5.SetActive(true);
+        }
+        if (_numberOfMissiles == 4)
+        {
+            _missile1.SetActive(true);
+            _missile2.SetActive(true);
+            _missile3.SetActive(true);
+            _missile4.SetActive(true);
+            _missile5.SetActive(false);
+        }
+        if (_numberOfMissiles == 3)
+        {
+            _missile1.SetActive(true);
+            _missile2.SetActive(true);
+            _missile3.SetActive(true);
+            _missile4.SetActive(false);
+            _missile5.SetActive(false);
+        }
+        if (_numberOfMissiles == 2)
+        {
+            _missile1.SetActive(true);
+            _missile2.SetActive(true);
+            _missile3.SetActive(false);
+            _missile4.SetActive(false);
+            _missile5.SetActive(false);
+        }
+        if (_numberOfMissiles == 1)
+        {
+            _missile1.SetActive(true);
+            _missile2.SetActive(false);
+            _missile3.SetActive(false);
+            _missile4.SetActive(false);
+            _missile5.SetActive(false);
+        }
+        if (_numberOfMissiles == 0)
+        {
+            _missile1.SetActive(false);
+            _missile2.SetActive(false);
+            _missile3.SetActive(false);
+            _missile4.SetActive(false);
+            _missile5.SetActive(false);
+        }
     }
 
     void FireLaser()
@@ -283,7 +346,6 @@ public class Player : MonoBehaviour
 
         _audioSource.clip = _laserClip;
         _audioSource.Play();
-        
     }
 
     void CalculateMovement()
@@ -302,18 +364,6 @@ public class Player : MonoBehaviour
             transform.Translate(direction * _speed * Time.deltaTime);
         }
     }
-
-    //void SpeedBoost()
-    //{
-    //    if(Input.GetKey(KeyCode.LeftShift))
-    //    {
-    //        _speed = 6f;
-    //    }
-    //    else
-    //    {
-    //       _speed = 4f;
-    //    }
-    //}
 
     void PlayerWrap()
     {

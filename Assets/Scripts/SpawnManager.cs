@@ -9,6 +9,8 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] GameObject _asteroidPrefab;
     [SerializeField] GameObject[] powerups;
     [SerializeField] GameObject _enemyContainer;
+   // private int _waves;
+   // private int _numberOfEnemies;
     private bool _stopSpawning = false;
     public int _randomNumber;
     
@@ -16,20 +18,23 @@ public class SpawnManager : MonoBehaviour
     {
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerupRoutine());
+       // _waves = 1;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        //Waves();
     }
 
     IEnumerator SpawnEnemyRoutine()
     {
         while (_stopSpawning == false)
         {
+           // if (_waves == 1 && _numberOfEnemies > 0)
+           // {
             Vector3 posToSpawn = new Vector3(Random.Range(-9, 9), 7, 0);
-            int getRandomNumber = (Random.Range(0, 4));
+            int getRandomNumber = (Random.Range(0, 5));
             if (getRandomNumber == 1)
             {
                 Instantiate(_asteroidPrefab, posToSpawn, Quaternion.identity);
@@ -37,13 +42,30 @@ public class SpawnManager : MonoBehaviour
             if (getRandomNumber != 1)
             {
                 GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
-                //_randomNumber = Random.Range(0, 4);
                 CalculateRandomEnemyMovement();
                 newEnemy.transform.parent = _enemyContainer.transform;
             }
+
             yield return new WaitForSeconds(5.0f);
+           // }
         }
     }
+
+   // void Waves()
+   // {
+   //     if (_waves == 1 && _numberOfEnemies == 0)
+   //     {
+   //         _waves++;
+   //     }
+   //     if (_waves == 2 && _numberOfEnemies == 0)
+   //     {
+   //         _waves++;
+    //    }
+   //     if (_waves == 3 && _numberOfEnemies == 0)
+   //     {
+   //         _waves++;
+   //     }
+  //  }
 
    public int CalculateRandomEnemyMovement()
    {

@@ -10,6 +10,12 @@ TagManager:
   - EnemyLaser
   - Missile
   - MissilePowerUp
+  - Missile1
+  - Missile2
+  - Missile3
+  - Missile4
+  - Missile5
+  - MissileAmmo
   layers:
   - Default
   - TransparentFX
