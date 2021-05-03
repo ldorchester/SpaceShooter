@@ -266,7 +266,7 @@ public class Player : MonoBehaviour
     {
         GameObject[] _enemiesActive = GameObject.FindGameObjectsWithTag("Enemy");
         _canFire = Time.time + _fireRate;
-        //_missiles--;
+        _missiles--;
         _numberOfMissiles--;
         //_uiManager.UpdateMissileAmmo(_missiles);
         Transform target = GetClosestEnemy(_enemiesActive);

@@ -52,7 +52,6 @@ public class Enemy : MonoBehaviour
     //-----------------------------Custom Methods Below ------------------------------------------------
     void CalculateMovement()
     {
-
         switch (_randomMove)
         {
             case 0:
@@ -73,12 +72,6 @@ public class Enemy : MonoBehaviour
             float xRandomRespawn = Random.Range(-9, 9);
             transform.position = new Vector3(xRandomRespawn, 4.5f, 0);
         }
-
-        // if (transform.position.y <= -6.5f)
-        // {
-        //     float xRandomRespawn = Random.Range(-9, 9);
-        //     transform.position = new Vector3(xRandomRespawn, 4.5f, 0);
-        // }
     }
 
     void FireLasers()

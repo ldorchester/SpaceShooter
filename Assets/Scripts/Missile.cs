@@ -11,7 +11,7 @@ public class Missile : MonoBehaviour
     private Animator _anim;
     private AudioSource _audioSource;
 
-    public float _speed = 5;
+    public float _speed = 8;
     public float _rotateSpeed = 200f;
 
     // Start is called before the first frame update

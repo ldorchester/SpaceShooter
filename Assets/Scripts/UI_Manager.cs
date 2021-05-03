@@ -12,6 +12,8 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] private Image _livesImg;
     [SerializeField] private Text _gameOverText;
     [SerializeField] private Text _restartText;
+    [SerializeField] private Text _waveText;
+    private int _wave;
     private Player _player;
     private GameManager _gameManager;
 
@@ -21,6 +23,8 @@ public class UI_Manager : MonoBehaviour
         _scoreText.text = "Score: " + 0;
         _laserAmmo.text = "Lasers: " + 15;
         _missileAmmo.text = "Missiles";
+        _wave = 1;
+        StartCoroutine(ShowWave());
 
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
         if (_gameManager == null)
@@ -55,19 +59,12 @@ public class UI_Manager : MonoBehaviour
         }
     }
 
-  /*  public void UpdateMissileAmmo(int updateMissileAmmo)
+    public void UpdateWave(int currentwave)
     {
-        _missileAmmo.text = "Missiles: " + updateMissileAmmo;
-        if (updateMissileAmmo <= 2)
-        {
-            _missileAmmo.GetComponent<Text>().color = Color.red;
-        }
-        else
-        {
-            _missileAmmo.GetComponent<Text>().color = Color.white;
-        }
+        _wave = currentwave;
+        StartCoroutine(ShowWave());
     }
-  */
+
     public void UpdateLives(int currentlives)
     {
         _livesImg.sprite = _liveSprites[currentlives];
@@ -78,7 +75,7 @@ public class UI_Manager : MonoBehaviour
         }
     }
 
-    void GameOverSequence()
+    public void GameOverSequence()
     {
         _gameManager.GameOver();
         _gameOverText.gameObject.SetActive(true);
@@ -96,4 +93,37 @@ public class UI_Manager : MonoBehaviour
             yield return new WaitForSeconds(.5f);
         }
     }
+
+    public IEnumerator ShowWave()
+    {
+        _waveText.text = "Wave: " + _wave;
+        _waveText.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(2f);
+        _waveText.gameObject.SetActive(false);
+    }
+    
+
+   /* public void UpdateWave(int currentwave)
+    {
+        if (currentwave == 1)
+        {
+            ShowWave();
+        }
+        if (currentwave == 2)
+        {
+            ShowWave();
+        }    
+        if (currentwave == 3)
+        {
+            ShowWave();
+        }
+        if (currentwave == 4)
+        {
+            GameOverSequence();
+        }
+    }
+   */
+
+   
 }

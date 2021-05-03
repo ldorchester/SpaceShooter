@@ -144,6 +144,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 367e2a9835a26b84a9576beaea494664, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1771314993136564059, guid: 96d9e40e752305347b82f812bdaa2f16, type: 3}
+  _target: {fileID: 0}
   _speed: 5
   _rotateSpeed: 200
