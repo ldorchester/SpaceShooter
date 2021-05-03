@@ -145,7 +145,7 @@ public class SpawnManager : MonoBehaviour
             _uiManager.UpdateWave(_wave);
             _enemySpawned = 0;
             StopCoroutine(SpawnWave2Routine());
-            yield return new WaitForSeconds(2.0f);
+            yield return new WaitForSeconds(1.9f);
             StartCoroutine(SpawnWave3Routine());
         }
     }
