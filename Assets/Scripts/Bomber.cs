@@ -2,20 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Bomber : MonoBehaviour
 {
-    [SerializeField] private float _speed = 4f;
-    private int _randomMove;
     private AudioSource _audioSource;
+    private Animator _anim;
     SpawnManager _spawnManager;
     private Player _player;
-    private Animator _anim;
-    [SerializeField] private GameObject _laserPrefab;
+    [SerializeField] private GameObject _bombPrefab;
     private float _fireRate = 3.0f;
     private float _canFire = -1f;
+    [SerializeField] private float _speed = 1f;
+    private bool _movingLeft;
 
     void Start()
     {
+        _movingLeft = true;
         _player = GameObject.Find("Player").GetComponent<Player>();
         if (_player == null)
         {
@@ -34,60 +35,50 @@ public class Enemy : MonoBehaviour
             Debug.LogError("The Spawn Manager is NULL.");
         }
 
-        _randomMove = _spawnManager.CalculateRandomEnemyMovement();
-
         _audioSource = GetComponent<AudioSource>();
-
     }
-   
+
 
     // Update is called once per frame
     void Update()
     {
         CalculateMovement();
-        FireLasers();
-        
+        DropBombs();
+
     }
 
     //-----------------------------Custom Methods Below ------------------------------------------------
     void CalculateMovement()
     {
-        switch (_randomMove)
+        if (_movingLeft == true)
         {
-            case 0:
-                transform.Translate(new Vector3(0, -1, 0) * _speed * Time.deltaTime);
-                break;
-            case 1:
-                transform.Translate(new Vector3(1, -1, 0) * _speed * Time.deltaTime);
-                break;
-            case 2:
-                transform.Translate(new Vector3(-1, -1, 0) * _speed * Time.deltaTime);
-                break;
-            default:
-                transform.position = new Vector3(0, 0, 0);
-                break;
+            transform.Translate(Vector3.left * _speed * Time.deltaTime);
         }
-        if (transform.position.y <= -6.5f)
+        if (transform.position.x <= -10f)
         {
-            float xRandomRespawn = Random.Range(-9, 9);
-            transform.position = new Vector3(xRandomRespawn, 4.5f, 0);
+            _movingLeft = false;
+        }
+        if (_movingLeft == false)
+        {
+            transform.Translate(Vector3.right * _speed * Time.deltaTime);
+        }
+        if (transform.position.x >= 9f)
+        {
+            _movingLeft = true;
         }
     }
 
-    void FireLasers()
+    void DropBombs()
     {
-        if (Time.time > _canFire)
-        {
-            _fireRate = Random.Range(3f, 7f);
-            _canFire = Time.time + _fireRate;
-            GameObject enemyLaser = Instantiate(_laserPrefab, transform.position + new Vector3(0, -0.2f, 0), Quaternion.identity);
-            Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
-
-            for (int i = 0; i < lasers.Length; i++)
+       if (Time.time > _canFire)
+       {
+            if (this.gameObject != null)
             {
-                lasers[i].AssignEnemyLaser();
+                _fireRate = Random.Range(1f, 3f);
+                _canFire = Time.time + _fireRate;
+                Instantiate(_bombPrefab, transform.position + new Vector3(0, -1f, 0), Quaternion.identity);
             }
-        }
+       }
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -96,7 +87,7 @@ public class Enemy : MonoBehaviour
         {
             Destroy(other.gameObject);
             _audioSource.Play();
-            _anim.SetTrigger("OnEnemyDeath");
+            _anim.SetTrigger("OnBomberDeath");
             Destroy(this.gameObject, 2f);
         }
 
@@ -109,14 +100,14 @@ public class Enemy : MonoBehaviour
             {
                 player.Damage();
             }
-            _anim.SetTrigger("OnEnemyDeath");
+            _anim.SetTrigger("OnBomberDeath");
             _speed = 0;
             _audioSource.Play();
             Destroy(this.gameObject, 2f);
         }
 
         //If Enemy Collides with Laser
-        if (other.tag == "Laser") 
+        if (other.tag == "Laser")
         {
             Destroy(other.gameObject);
 
@@ -124,7 +115,7 @@ public class Enemy : MonoBehaviour
             {
                 _player.AddToScore(10);
             }
-            _anim.SetTrigger("OnEnemyDeath");
+            _anim.SetTrigger("OnBomberDeath");
             _speed = 0;
             _audioSource.Play();
 

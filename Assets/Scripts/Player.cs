@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -39,6 +38,8 @@ public class Player : MonoBehaviour
     private bool _isTripleShotActive = false;
     private bool _isSpeedActive = false;
     private bool _isShieldActive = false;
+    private bool _isPenaltyActive = false;
+    private bool _normalMovement;
 
 
     void Start()
@@ -58,6 +59,7 @@ public class Player : MonoBehaviour
 
         currentThruster = maxThruster;
         thrusterBar.SetMaxThruster(maxThruster);
+        _normalMovement = true;
     }
 
     void Update()
@@ -350,21 +352,53 @@ public class Player : MonoBehaviour
 
     void CalculateMovement()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-        Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
+        if (_normalMovement == true)
+        {
+            float horizontalInput = Input.GetAxis("Horizontal");
+            float verticalInput = Input.GetAxis("Vertical");
+            Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
 
-        if (_isSpeedActive == true)
-        {
-            _speed = 8;
-            transform.Translate(direction * _speed * Time.deltaTime);
+            if (_isSpeedActive == true)
+            {
+                _speed = 8;
+                transform.Translate(direction * _speed * Time.deltaTime);
+            }
+            else
+            {
+                transform.Translate(direction * _speed * Time.deltaTime);
+            }
         }
-        else
+        if (_normalMovement == false)
         {
-            transform.Translate(direction * _speed * Time.deltaTime);
+            float horizontalInput = Input.GetAxis("Horizontal");
+            float verticalInput = Input.GetAxis("Vertical");
+            Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
+
+            if (_isSpeedActive == true)
+            {
+                _speed = 3;
+                transform.Translate(direction * _speed * Time.deltaTime);
+            }
+            else
+            {
+                transform.Translate(direction * 2 * Time.deltaTime);
+            }
         }
     }
 
+    public void PenaltyMovement()
+    {
+        _isPenaltyActive = true;
+        _normalMovement = false;
+        StartCoroutine(PenaltyPowerDownRoutine());
+    }
+
+    IEnumerator PenaltyPowerDownRoutine()
+    {
+        yield return new WaitForSeconds(7f);
+        _normalMovement = true;
+        _isPenaltyActive = false;
+    }
     void PlayerWrap()
     {
         float sideBoundsx = 10.75f;
