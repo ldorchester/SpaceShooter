@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MissilePowerup : MonoBehaviour
 {
-    [SerializeField] private float _speed = 3f;
+    [SerializeField] private float _speed = 5f;
     [SerializeField] private AudioClip _audioClip;
 
     // Start is called before the first frame update

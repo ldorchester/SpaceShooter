@@ -113,7 +113,7 @@ public class Bomber : MonoBehaviour
 
             if (_player != null)
             {
-                _player.AddToScore(10);
+                _player.AddToScore(20);
             }
             _anim.SetTrigger("OnBomberDeath");
             _speed = 0;

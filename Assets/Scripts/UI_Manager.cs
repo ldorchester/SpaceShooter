@@ -67,7 +67,8 @@ public class UI_Manager : MonoBehaviour
 
     public void UpdateLives(int currentlives)
     {
-        if (currentlives == 0)
+        _livesImg.sprite = _liveSprites[currentlives];
+        if (currentlives <= 0)
         {
             GameOverSequence();
         }
@@ -100,28 +101,6 @@ public class UI_Manager : MonoBehaviour
         yield return new WaitForSeconds(2f);
         _waveText.gameObject.SetActive(false);
     }
-    
-
-   /* public void UpdateWave(int currentwave)
-    {
-        if (currentwave == 1)
-        {
-            ShowWave();
-        }
-        if (currentwave == 2)
-        {
-            ShowWave();
-        }    
-        if (currentwave == 3)
-        {
-            ShowWave();
-        }
-        if (currentwave == 4)
-        {
-            GameOverSequence();
-        }
-    }
-   */
 
    
 }

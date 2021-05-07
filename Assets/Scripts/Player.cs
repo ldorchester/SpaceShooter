@@ -64,9 +64,9 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        
+
         //Shield method to take 3 hits
-        ShieldExtra();
+        CheckShieldDamage();
 
         //User Input & Movement
         CalculateMovement();
@@ -169,6 +169,48 @@ public class Player : MonoBehaviour
         _shieldSprite.SetActive(true);
     }
 
+    public void CheckShieldDamage()
+    {
+        if (_isShieldActive == true)
+        { 
+            if (_shieldPower == 3)
+            {
+                _shieldSprite.GetComponent<Renderer>().material.color = Color.blue;
+            }
+            if (_shieldPower == 2)
+            {
+                _shieldSprite.GetComponent<Renderer>().material.color = Color.green;
+            }
+            if (_shieldPower == 1)
+            {
+                 _shieldSprite.GetComponent<Renderer>().material.color = Color.red;
+            }
+            if (_shieldPower == 0)
+            {
+                _shieldSprite.SetActive(false);
+                _isShieldActive = false;
+            }
+        }
+        else
+        {
+            return;
+        }
+       /* switch (_shieldPower)
+        {
+            case 2:
+                _shieldSprite.GetComponent<Renderer>().material.color = Color.green;
+                break;
+            case 1:
+                _shieldSprite.GetComponent<Renderer>().material.color = Color.red;
+                break;
+            case 0:
+                _shieldSprite.SetActive(false);
+                _isShieldActive = false;
+                break;
+        }
+       */
+    }
+
     public void SpeedActive()
     {
         _isSpeedActive = true;
@@ -210,7 +252,7 @@ public class Player : MonoBehaviour
         _uiManager.UpdateLives(_lives);
     }
 
-    private void ShieldExtra()
+   /* private void ShieldExtra()
     {
         switch (_shieldPower)
         {
@@ -226,6 +268,7 @@ public class Player : MonoBehaviour
                 break;
         }
     }
+   */
 
     public void Damage()
     {

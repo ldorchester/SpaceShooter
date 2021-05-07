@@ -6,6 +6,8 @@ public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private int _enemySpawned;
     [SerializeField] private int _wave;
+    private int _weightedTotal;
+    private int _powerUpToSpawn;
     [SerializeField] GameObject _enemyPrefab;
     [SerializeField] GameObject _missilePowerUpPrefab;
     [SerializeField] GameObject _asteroidPrefab;
@@ -16,8 +18,8 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] GameObject _player;
     private UI_Manager _uiManager;
     private bool _stopSpawning = false;
-    public int _randomNumber;
-    
+
+
     void Start()
     {
         _wave = 1;
@@ -32,6 +34,50 @@ public class SpawnManager : MonoBehaviour
         {
             StartCoroutine(SpawnWave1Routine());
             StartCoroutine(SpawnPowerupRoutine());
+        }
+    }
+
+    void ChooseAPowerup()
+    {
+        _weightedTotal = 0;
+
+        int[] powerUpTable =
+        {
+            40, //ammo
+            25, //speed
+            16, //health
+            11, //shield
+            8, //tripleshot
+        };
+        int[] powerUpToAward =
+        {
+            3, //ammo
+            1, //speed
+            2, //shield
+            4, //health
+            0, //tripleshot
+        };
+
+        foreach(var item in powerUpTable)
+        {
+            _weightedTotal += item;
+        }
+
+        var randomNumber = Random.Range(0, _weightedTotal);
+        var i = 0;
+
+        foreach(var weight in powerUpTable)
+        {
+            if(randomNumber <= weight)
+            {
+                _powerUpToSpawn = powerUpToAward[i];
+                return;
+            }
+            else
+            {
+                i++;
+                randomNumber -= weight;
+            }
         }
     }
 
@@ -50,7 +96,7 @@ public class SpawnManager : MonoBehaviour
                 Instantiate(_asteroidPrefab, posToSpawn, Quaternion.identity);
             }
 
-            int getBomberRandomNumber = (Random.Range(1, 3));
+            int getBomberRandomNumber = (Random.Range(1, 5));
             if (getBomberRandomNumber == 1)
             {
                 Instantiate(_BomberPrefab, bomberSpawnPos, Quaternion.identity);
@@ -164,12 +210,13 @@ public class SpawnManager : MonoBehaviour
         while (_stopSpawning == false)
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-9, 9), 7, 0);
+          //  int _RandomNumber = Random.Range(0, 5);
 
             SpawnMissilePowerUp();
             SpawnPenaltyPowerUp();
-
-            int randomPowerup = Random.Range(0, 5);
-            Instantiate(powerups[randomPowerup], posToSpawn, Quaternion.identity);
+            ChooseAPowerup();
+           /// Instantiate(powerups[_RandomNumber], posToSpawn, Quaternion.identity);
+            Instantiate(powerups[_powerUpToSpawn], posToSpawn, Quaternion.identity);
 
             yield return new WaitForSeconds(Random.Range(3, 7));
         }

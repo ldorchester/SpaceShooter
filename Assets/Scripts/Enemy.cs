@@ -13,9 +13,17 @@ public class Enemy : MonoBehaviour
     [SerializeField] private GameObject _laserPrefab;
     private float _fireRate = 3.0f;
     private float _canFire = -1f;
+    private bool _isShieldActive;
+    private int _shieldPower;
+    [SerializeField] private GameObject _shieldSprite;
+    private int _randomShieldNumber;
 
     void Start()
     {
+        _isShieldActive = false;
+        _shieldSprite.SetActive(false);
+        CheckForShield();
+
         _player = GameObject.Find("Player").GetComponent<Player>();
         if (_player == null)
         {
@@ -90,9 +98,32 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void CheckForShield()
+    {
+        _randomShieldNumber = Random.Range(1, 2);
+        if (_randomShieldNumber == 1)
+        {
+            ShieldActive();
+        }
+    }
+
+    private void ShieldActive()
+    {
+        _shieldPower = 1;
+        _isShieldActive = true;
+        _shieldSprite.SetActive(true);
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Missile")
+        if (other.tag == "Missile" && _isShieldActive == true)
+        {
+            Destroy(other.gameObject);
+            _shieldPower--;
+            _shieldSprite.SetActive(false);
+            StartCoroutine(ChangeShieldActiveDelay());
+        }
+        if (other.tag == "Missile" && _isShieldActive == false)
         {
             Destroy(other.gameObject);
             _audioSource.Play();
@@ -100,23 +131,44 @@ public class Enemy : MonoBehaviour
             Destroy(this.gameObject, 2f);
         }
 
-        //If Enemy Collides with Player
-        if (other.tag == "Player")
+        if (other.tag == "Player" && _isShieldActive == true)
         {
             Player player = other.transform.GetComponent<Player>();
 
-            if (player != null)
-            {
+            
+            player.Damage();
+            //  }
+          //  _anim.SetTrigger("OnEnemyDeath");
+          //  _speed = 0;
+          //  _audioSource.Play();
+          //  Destroy(this.gameObject, 2f);
+          //  Destroy(other.gameObject);
+            _shieldPower--;
+            _shieldSprite.SetActive(false);
+            StartCoroutine(ChangeShieldActiveDelay());
+        }
+        if (other.tag == "Player" && _isShieldActive == false)
+        {
+            Player player = other.transform.GetComponent<Player>();
+
+           // if (player != null)
+           // {
                 player.Damage();
-            }
+          //  }
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
             _audioSource.Play();
             Destroy(this.gameObject, 2f);
         }
 
-        //If Enemy Collides with Laser
-        if (other.tag == "Laser") 
+        if (other.tag == "Laser" && _isShieldActive == true)
+        {
+            Destroy(other.gameObject);
+            _shieldPower--;
+            _shieldSprite.SetActive(false);
+            StartCoroutine(ChangeShieldActiveDelay());
+        }
+        if (other.tag == "Laser" && _isShieldActive == false)
         {
             Destroy(other.gameObject);
 
@@ -131,6 +183,12 @@ public class Enemy : MonoBehaviour
             Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2f);
         }
+    }
+
+    IEnumerator ChangeShieldActiveDelay()
+    {
+        yield return new WaitForSeconds(.5f);
+        _isShieldActive = false;
     }
 
 }
