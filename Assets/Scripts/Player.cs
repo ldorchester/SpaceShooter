@@ -274,6 +274,14 @@ public class Player : MonoBehaviour
     {
         if (_isShieldActive == true)
         {
+            if (_shieldPower == 0)
+            {
+                return;
+            }
+            if (_shieldPower == -1)
+            {
+                return;
+            }
             _shieldPower--;
         }
 

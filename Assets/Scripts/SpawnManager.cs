@@ -25,6 +25,10 @@ public class SpawnManager : MonoBehaviour
         _wave = 1;
         _enemySpawned = 0;
         _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
+        if (_player == null)
+        {
+            Debug.LogError("The player is NULL");
+        }
     }
 
     // Update is called once per frame
@@ -202,7 +206,7 @@ public class SpawnManager : MonoBehaviour
 
     public int CalculateRandomEnemyMovement()
    {
-        return Random.Range(0, 4);
+        return Random.Range(0, 5);
    }
 
     IEnumerator SpawnPowerupRoutine()

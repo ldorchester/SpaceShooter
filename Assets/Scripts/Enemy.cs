@@ -17,9 +17,12 @@ public class Enemy : MonoBehaviour
     private int _shieldPower;
     [SerializeField] private GameObject _shieldSprite;
     private int _randomShieldNumber;
+    private Rigidbody2D rb;
+    private Vector2 _movement;
 
     void Start()
     {
+        rb = this.GetComponent<Rigidbody2D>();
         _isShieldActive = false;
         _shieldSprite.SetActive(false);
         CheckForShield();
@@ -54,9 +57,17 @@ public class Enemy : MonoBehaviour
     {
         CalculateMovement();
         FireLasers();
-        
     }
-
+    private void FixedUpdate()
+   {
+        MoveEnemy(_movement);
+    }
+ 
+    void MoveEnemy(Vector2 direction)
+    {
+        rb.MovePosition((Vector2)transform.position + (direction * 2f * Time.deltaTime));
+    }
+  
     //-----------------------------Custom Methods Below ------------------------------------------------
     void CalculateMovement()
     {
@@ -66,15 +77,27 @@ public class Enemy : MonoBehaviour
                 transform.Translate(new Vector3(0, -1, 0) * _speed * Time.deltaTime);
                 break;
             case 1:
-                transform.Translate(new Vector3(1, -1, 0) * _speed * Time.deltaTime);
+                Vector3 direction3 = _player.transform.position - transform.position;
+                direction3.Normalize();
+                _movement = direction3;
+                //transform.Translate(new Vector3(1, -1, 0) * _speed * Time.deltaTime);
                 break;
             case 2:
-                transform.Translate(new Vector3(-1, -1, 0) * _speed * Time.deltaTime);
+                //transform.Translate(new Vector3(-1, -1, 0) * _speed * Time.deltaTime);
+                Vector3 direction2 = _player.transform.position - transform.position;
+                direction2.Normalize();
+                _movement = direction2;
+                break;
+            case 3:
+                Vector3 direction = _player.transform.position - transform.position;
+                direction.Normalize();
+                _movement = direction;
                 break;
             default:
                 transform.position = new Vector3(0, 0, 0);
                 break;
         }
+
         if (transform.position.y <= -6.5f)
         {
             float xRandomRespawn = Random.Range(-9, 9);
