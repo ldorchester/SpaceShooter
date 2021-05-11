@@ -9,6 +9,7 @@ public class SpawnManager : MonoBehaviour
     private int _weightedTotal;
     private int _powerUpToSpawn;
     [SerializeField] GameObject _enemyPrefab;
+    [SerializeField] GameObject _bottomEnemyPrefab;
     [SerializeField] GameObject _missilePowerUpPrefab;
     [SerializeField] GameObject _asteroidPrefab;
     [SerializeField] GameObject _BomberPrefab;
@@ -17,13 +18,14 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] GameObject _penaltyPrefab;
     [SerializeField] GameObject _player;
     private UI_Manager _uiManager;
-    private bool _stopSpawning = false;
+    private bool _stopSpawning;
 
 
     void Start()
     {
         _wave = 1;
         _enemySpawned = 0;
+        _stopSpawning = true;
         _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
         if (_player == null)
         {
@@ -34,11 +36,14 @@ public class SpawnManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            StartCoroutine(SpawnWave1Routine());
-            StartCoroutine(SpawnPowerupRoutine());
-        }
+       
+    }
+
+    public void StartSpawning()
+    {
+        _stopSpawning = false;
+        StartCoroutine(SpawnWave1Routine());
+        StartCoroutine(SpawnPowerupRoutine());
     }
 
     void ChooseAPowerup()
@@ -93,6 +98,13 @@ public class SpawnManager : MonoBehaviour
 
             Vector3 posToSpawn = new Vector3(Random.Range(-9, 9), 7, 0);
             Vector3 bomberSpawnPos = new Vector3(11, 4, 0);
+            Vector3 bottomEnemySpawnPos = new Vector3(-9, 8, 0);
+
+            int getbottomEnemyRandomNumber = (Random.Range(1, 8));
+            if (getbottomEnemyRandomNumber == 1)
+            {
+                Instantiate(_bottomEnemyPrefab, bottomEnemySpawnPos, Quaternion.identity);
+            }
 
             int getAsteroidRandomNumber = (Random.Range(1, 5));
             if (getAsteroidRandomNumber == 1)
@@ -133,6 +145,13 @@ public class SpawnManager : MonoBehaviour
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-9, 9), 7, 0);
             Vector3 bomberSpawnPos = new Vector3(11, 4, 0);
+            Vector3 bottomEnemySpawnPos = new Vector3(-9, 8, 0);
+
+            int getbottomEnemyRandomNumber = (Random.Range(1, 8));
+            if (getbottomEnemyRandomNumber == 1)
+            {
+                Instantiate(_bottomEnemyPrefab, bottomEnemySpawnPos, Quaternion.identity);
+            }
 
             int getRandomNumber = (Random.Range(0, 5));
             if (getRandomNumber == 1)
@@ -172,6 +191,13 @@ public class SpawnManager : MonoBehaviour
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-9, 9), 7, 0);
             Vector3 bomberSpawnPos = new Vector3(11, 4, 0);
+            Vector3 bottomEnemySpawnPos = new Vector3(-9, 8, 0);
+
+            int getbottomEnemyRandomNumber = (Random.Range(1, 8));
+            if (getbottomEnemyRandomNumber == 1)
+            {
+                Instantiate(_bottomEnemyPrefab, bottomEnemySpawnPos, Quaternion.identity);
+            }
 
             int getRandomNumber = (Random.Range(0, 10));
             if (getRandomNumber == 1)

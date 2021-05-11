@@ -77,16 +77,10 @@ public class Enemy : MonoBehaviour
                 transform.Translate(new Vector3(0, -1, 0) * _speed * Time.deltaTime);
                 break;
             case 1:
-                Vector3 direction3 = _player.transform.position - transform.position;
-                direction3.Normalize();
-                _movement = direction3;
-                //transform.Translate(new Vector3(1, -1, 0) * _speed * Time.deltaTime);
+                transform.Translate(new Vector3(1, -1, 0) * _speed * Time.deltaTime);
                 break;
             case 2:
-                //transform.Translate(new Vector3(-1, -1, 0) * _speed * Time.deltaTime);
-                Vector3 direction2 = _player.transform.position - transform.position;
-                direction2.Normalize();
-                _movement = direction2;
+                transform.Translate(new Vector3(-1, -1, 0) * _speed * Time.deltaTime);
                 break;
             case 3:
                 Vector3 direction = _player.transform.position - transform.position;
