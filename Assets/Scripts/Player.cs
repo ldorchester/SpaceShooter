@@ -5,6 +5,7 @@ public class Player : MonoBehaviour
 {
     public float maxThruster = 100;
     public float currentThruster;
+    private float _powerupSpeed;
     public ThrusterBar thrusterBar;
     [SerializeField] private float _speed = 4f;
     [SerializeField] private float _fireRate = 0.25f;
@@ -45,6 +46,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         _numberOfMissiles = 5;
+        _powerupSpeed = 4;
         _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
         if (_uiManager == null)
         {
@@ -86,6 +88,9 @@ public class Player : MonoBehaviour
         //Check how many missiles player has
         NumberOfMissiles();
 
+        //Attract Powerups to player
+        PowerUpCollector();
+
         //Check to see if player is firing and spawn a laser & cool down so player can only fire 0.25.
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire && ammo > 0)
         {
@@ -118,6 +123,20 @@ public class Player : MonoBehaviour
 
     //-------------------------Custom Methods Section--------------------------------
 
+    void PowerUpCollector()
+    {
+        if (Input.GetKey(KeyCode.C))
+        {
+            GameObject[] _powerups = GameObject.FindGameObjectsWithTag("PowerUp");
+            Transform[] powerupTransform = new Transform[_powerups.Length];
+
+            for (int i = 0; i < +_powerups.Length; i++)
+            {
+                powerupTransform[i] = _powerups[i].transform;
+                powerupTransform[i].position = Vector3.MoveTowards(powerupTransform[i].position, transform.position, _powerupSpeed * Time.deltaTime);
+            }
+        }
+    }
     void SpeedBoost(float thrusters)
     {
         _speed = 6f;
@@ -252,24 +271,6 @@ public class Player : MonoBehaviour
         _uiManager.UpdateLives(_lives);
     }
 
-   /* private void ShieldExtra()
-    {
-        switch (_shieldPower)
-        {
-            case 2:
-                _shieldSprite.GetComponent<Renderer>().material.color = Color.green;
-                break;
-            case 1:
-                _shieldSprite.GetComponent<Renderer>().material.color = Color.red;
-                break;
-            case 0:
-                _shieldSprite.SetActive(false);
-                _isShieldActive = false;
-                break;
-        }
-    }
-   */
-
     public void Damage()
     {
         if (_isShieldActive == true)
@@ -293,6 +294,27 @@ public class Player : MonoBehaviour
         }
        if (_lives <= 0)
        {
+            _spawnManager.OnPlayerDeath();
+            var powerup = GameObject.FindGameObjectsWithTag("PowerUp");
+            foreach (var PowerUp in powerup)
+            {
+                Destroy(PowerUp);
+            }
+            var enemyshootup = GameObject.FindGameObjectsWithTag("EnemyShootUp");
+            foreach (var EnemyShootUp in enemyshootup)
+            {
+                Destroy(EnemyShootUp);
+            }
+            var bomber = GameObject.FindGameObjectsWithTag("Bomber");
+            foreach (var Bomber in bomber)
+            {
+                Destroy(Bomber);
+            }
+            var enemy = GameObject.FindGameObjectsWithTag("Enemy");
+            foreach (var Enemy in enemy)
+            {
+                Destroy(Enemy);
+            }
             _spawnManager.OnPlayerDeath();
             Destroy(this.gameObject);
        }

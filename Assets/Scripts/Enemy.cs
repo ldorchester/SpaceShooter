@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _speed = 4f;
     private int _randomMove;
+    private int _agroRange = 15;
     private AudioSource _audioSource;
     SpawnManager _spawnManager;
     private Player _player;
@@ -27,10 +28,9 @@ public class Enemy : MonoBehaviour
         _shieldSprite.SetActive(false);
         CheckForShield();
 
-        _player = GameObject.Find("Player").GetComponent<Player>();
-        if (_player == null)
+        if (_player != null)
         {
-            Debug.LogError("The Player is NULL");
+            _player = GameObject.Find("Player").GetComponent<Player>();
         }
 
         _anim = GetComponent<Animator>();
@@ -56,19 +56,43 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         CalculateMovement();
+        CanSeePowerup(_agroRange);
         FireLasers();
     }
     private void FixedUpdate()
    {
         MoveEnemy(_movement);
     }
- 
+
+    //-----------------------------Custom Methods Below ------------------------------------------------
+    bool CanSeePowerup(float distance)
+    {
+        bool val = false;
+        float castDist = distance;
+        Vector2 endPos = transform.position + Vector3.down * distance;
+
+        RaycastHit2D hit = Physics2D.Linecast(transform.position, endPos, 1 << LayerMask.NameToLayer("Action"));
+
+        if (hit.collider != null)
+        {
+            if (hit.collider.gameObject.CompareTag("PowerUp"))
+            {
+                val = true;
+                FireLasersAtPowerup();
+            }
+            else
+            {
+                val = false;
+            }
+        }
+        return val;
+    }
+
     void MoveEnemy(Vector2 direction)
     {
         rb.MovePosition((Vector2)transform.position + (direction * 2f * Time.deltaTime));
     }
-  
-    //-----------------------------Custom Methods Below ------------------------------------------------
+
     void CalculateMovement()
     {
         switch (_randomMove)
@@ -83,9 +107,12 @@ public class Enemy : MonoBehaviour
                 transform.Translate(new Vector3(-1, -1, 0) * _speed * Time.deltaTime);
                 break;
             case 3:
-                Vector3 direction = _player.transform.position - transform.position;
-                direction.Normalize();
-                _movement = direction;
+                if (_player != null)
+                {
+                    Vector3 direction = _player.transform.position - transform.position;
+                    direction.Normalize();
+                    _movement = direction;
+                }
                 break;
             default:
                 transform.position = new Vector3(0, 0, 0);
@@ -99,6 +126,21 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    void FireLasersAtPowerup()
+    {
+        if (Time.time > _canFire)
+        {
+            _fireRate = 1f;
+            _canFire = Time.time + _fireRate;
+            GameObject enemyLaser = Instantiate(_laserPrefab, transform.position + new Vector3(0, -0.2f, 0), Quaternion.identity);
+           // Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+
+           // for (int i = 0; i < lasers.Length; i++)
+          //  {
+          //      lasers[i].AssignEnemyLaser();
+          //  }
+        }
+    }
     void FireLasers()
     {
         if (Time.time > _canFire)
@@ -143,6 +185,8 @@ public class Enemy : MonoBehaviour
         if (other.tag == "Missile" && _isShieldActive == false)
         {
             Destroy(other.gameObject);
+            _player = GameObject.Find("Player").GetComponent<Player>();
+            _player.AddToScore(10);
             _audioSource.Play();
             _anim.SetTrigger("OnEnemyDeath");
             Destroy(this.gameObject, 2f);
@@ -150,34 +194,22 @@ public class Enemy : MonoBehaviour
 
         if (other.tag == "Player" && _isShieldActive == true)
         {
-            Player player = other.transform.GetComponent<Player>();
-
-            
-            player.Damage();
-            //  }
-          //  _anim.SetTrigger("OnEnemyDeath");
-          //  _speed = 0;
-          //  _audioSource.Play();
-          //  Destroy(this.gameObject, 2f);
-          //  Destroy(other.gameObject);
+            _player = GameObject.Find("Player").GetComponent<Player>();
+            _player.Damage();
             _shieldPower--;
             _shieldSprite.SetActive(false);
             StartCoroutine(ChangeShieldActiveDelay());
         }
         if (other.tag == "Player" && _isShieldActive == false)
         {
-            Player player = other.transform.GetComponent<Player>();
-
-           // if (player != null)
-           // {
-                player.Damage();
-          //  }
+            _player = GameObject.Find("Player").GetComponent<Player>();
+            _player.AddToScore(10);
+            _player.Damage();
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
             _audioSource.Play();
             Destroy(this.gameObject, 2f);
         }
-
         if (other.tag == "Laser" && _isShieldActive == true)
         {
             Destroy(other.gameObject);
@@ -188,11 +220,9 @@ public class Enemy : MonoBehaviour
         if (other.tag == "Laser" && _isShieldActive == false)
         {
             Destroy(other.gameObject);
+            _player = GameObject.Find("Player").GetComponent<Player>();
+            _player.AddToScore(10);
 
-            if (_player != null)
-            {
-                _player.AddToScore(10);
-            }
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
             _audioSource.Play();

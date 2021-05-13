@@ -71,5 +71,23 @@ public class Laser : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
+        if (other.tag == "PowerUp" && _isEnemyLaser == true)
+        {
+            Destroy(this.gameObject);
+            Destroy(other.gameObject);
+        }
+
+        if (other.tag == "MissilePowerUp" && _isEnemyLaser == true)
+        {
+            Destroy(this.gameObject);
+            Destroy(other.gameObject);
+        }
+
+        if (other.tag == "TripleShot" && _isEnemyLaser == true)
+        {
+            Destroy(this.gameObject);
+            Destroy(other.gameObject);
+        }
     }
 }

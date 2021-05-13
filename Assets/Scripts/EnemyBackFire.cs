@@ -132,11 +132,7 @@ public class EnemyBackFire : MonoBehaviour
         if (other.tag == "Player")
         {
             Player player = other.transform.GetComponent<Player>();
-
-            // if (player != null)
-            // {
             player.Damage();
-            //  }
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
             _audioSource.Play();

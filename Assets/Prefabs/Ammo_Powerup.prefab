@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 1174504079009833423}
   - component: {fileID: 5145537158841400158}
   - component: {fileID: 1026715962793991592}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Ammo_Powerup
-  m_TagString: Untagged
+  m_TagString: PowerUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,7 +99,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 3
   powerupID: 3
-  _missilePowerup: {fileID: 6320511093884585034, guid: 2cc08e405b981e446be38decb6930aed, type: 3}
   _audioClip: {fileID: 8300000, guid: 31fd028d19c276c4c9b84508b5808798, type: 3}
 --- !u!50 &5145537158841400158
 Rigidbody2D:

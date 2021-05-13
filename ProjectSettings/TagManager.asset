@@ -16,6 +16,9 @@ TagManager:
   - Missile4
   - Missile5
   - MissileAmmo
+  - PowerUp
+  - Bomber
+  - EnemyShootUp
   layers:
   - Default
   - TransparentFX
