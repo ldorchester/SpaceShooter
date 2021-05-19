@@ -5,8 +5,21 @@ using UnityEngine;
 public class Laser : MonoBehaviour
 {
     [SerializeField] private float _speed = 10.0f;
+    private int _rightWingHit = 4;
+    private int _leftWingHit = 4;
+    private int _rightBackWingHit = 4;
+    private int _leftBackWingHit = 4;
     private bool _isEnemyLaser = false;
- 
+    [SerializeField] GameObject _rightWing;
+    [SerializeField] GameObject _leftWing;
+    [SerializeField] GameObject _rightBackWing;
+    [SerializeField] GameObject _leftBackWing;
+
+
+    private void Start()
+    {
+
+    }
     void Update()
     {
         if (_isEnemyLaser == false)
@@ -16,6 +29,11 @@ public class Laser : MonoBehaviour
         else
         {
             MoveDown();
+        }
+
+        if (_rightWingHit == 0)
+        {
+            Destroy(_rightWing);
         }
     }
 
@@ -54,18 +72,18 @@ public class Laser : MonoBehaviour
         _isEnemyLaser = true;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+   private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Player" && _isEnemyLaser == true)
         {
             Player player = other.GetComponent<Player>();
-
+            
             if (player != null)
             {
                 player.Damage();
             }
             Destroy(this.gameObject);
-        }
+        } 
 
         if (other.tag == "Enemy" && _isEnemyLaser == true)
         {

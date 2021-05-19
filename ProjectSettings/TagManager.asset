@@ -19,6 +19,13 @@ TagManager:
   - PowerUp
   - Bomber
   - EnemyShootUp
+  - BossEnemyFighter
+  - RightBossWing
+  - LeftBossWing
+  - RightBackBossWing
+  - LeftBackBossWing
+  - EnemyBoss
+  - FinalExplosion
   layers:
   - Default
   - TransparentFX

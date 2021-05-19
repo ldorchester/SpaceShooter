@@ -11,6 +11,7 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] private Sprite[] _liveSprites;
     [SerializeField] private Image _livesImg;
     [SerializeField] private Text _gameOverText;
+    [SerializeField] private Text _youWinText;
     [SerializeField] private Text _restartText;
     [SerializeField] private Text _waveText;
     private int _wave;
@@ -65,6 +66,12 @@ public class UI_Manager : MonoBehaviour
         StartCoroutine(ShowWave());
     }
 
+    public void UpdateBossWave()
+    {
+      //  _wave = bosswave;
+        StartCoroutine(ShowBossWave());
+    }
+
     public void UpdateLives(int currentlives)
     {
         if (currentlives <= 0)
@@ -82,6 +89,15 @@ public class UI_Manager : MonoBehaviour
         StartCoroutine(GameOverFlickerRoutine());
     }
 
+    public void YouWinSequence()
+    {
+        StartCoroutine(YouWinFlickerRoutine());
+        _gameManager.GameOver();
+        _youWinText.gameObject.SetActive(true);
+        _restartText.gameObject.SetActive(true);
+        
+    }
+
     private IEnumerator GameOverFlickerRoutine()
     {
         while (_gameOverText == true)
@@ -93,9 +109,29 @@ public class UI_Manager : MonoBehaviour
         }
     }
 
+    private IEnumerator YouWinFlickerRoutine()
+    {
+        while (_youWinText == true)
+        {
+            _youWinText.text = "YOU WIN!";
+            yield return new WaitForSeconds(.5f);
+            _youWinText.text = "YOU WIN!";
+            yield return new WaitForSeconds(.5f);
+        }
+    }
+
     public IEnumerator ShowWave()
     {
         _waveText.text = "Wave: " + _wave;
+        _waveText.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(2f);
+        _waveText.gameObject.SetActive(false);
+    }
+
+    public IEnumerator ShowBossWave()
+    {
+        _waveText.text = "Here Comes Boss Ship!";
         _waveText.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(2f);

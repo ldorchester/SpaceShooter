@@ -192,7 +192,7 @@ public class Enemy : MonoBehaviour
             Destroy(this.gameObject, 2f);
         }
 
-        if (other.tag == "Player" && _isShieldActive == true)
+       if (other.tag == "Player" && _isShieldActive == true)
         {
             _player = GameObject.Find("Player").GetComponent<Player>();
             _player.Damage();
@@ -210,6 +210,7 @@ public class Enemy : MonoBehaviour
             _audioSource.Play();
             Destroy(this.gameObject, 2f);
         }
+   
         if (other.tag == "Laser" && _isShieldActive == true)
         {
             Destroy(other.gameObject);

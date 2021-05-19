@@ -7,10 +7,11 @@ public class Asteroid : MonoBehaviour
     [SerializeField] private float _rotateSpeed = 150f;
     private float _speed = 3;
     [SerializeField] private GameObject _explosionPrefab;
+    private AudioSource _audioSource;
 
     void Start()
     {
-
+        _audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -34,6 +35,7 @@ public class Asteroid : MonoBehaviour
         {
             Destroy(other.gameObject);
             Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
+            _audioSource.Play();
             Destroy(this.gameObject, .25f);
         }
 
@@ -41,6 +43,7 @@ public class Asteroid : MonoBehaviour
         {
             Destroy(other.gameObject);
             Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
+            _audioSource.Play();
             Destroy(this.gameObject);
         }    
 
@@ -51,6 +54,7 @@ public class Asteroid : MonoBehaviour
             {
                 player.Damage();
                 Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
+                _audioSource.Play();
                 Destroy(this.gameObject);
             }
         }

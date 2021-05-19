@@ -5,10 +5,12 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private int _enemySpawned;
+    [SerializeField] private int _bossFightersSpawned;
     [SerializeField] private int _wave;
     private int _weightedTotal;
     private int _powerUpToSpawn;
     [SerializeField] GameObject _enemyPrefab;
+    [SerializeField] GameObject _bossFightersPrefab;
     [SerializeField] GameObject _bottomEnemyPrefab;
     [SerializeField] GameObject _missilePowerUpPrefab;
     [SerializeField] GameObject _asteroidPrefab;
@@ -17,14 +19,20 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] GameObject _enemyContainer;
     [SerializeField] GameObject _penaltyPrefab;
     [SerializeField] GameObject _player;
+    [SerializeField] GameObject _bossPrefab;
     private UI_Manager _uiManager;
     private bool _stopSpawning;
+    [SerializeField] private bool _bossCreated;
+    [SerializeField] private bool _bossAlive;
 
 
     void Start()
     {
         _wave = 1;
+        _bossCreated = false;
+        _bossAlive = false;
         _enemySpawned = 0;
+        _bossFightersSpawned = 0;
         _stopSpawning = true;
         _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
         if (_player == null)
@@ -36,7 +44,7 @@ public class SpawnManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+        
     }
 
     public void StartSpawning()
@@ -90,9 +98,9 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-   IEnumerator SpawnWave1Routine()
+    IEnumerator SpawnWave1Routine()
     {
-        while (_enemySpawned < 10 && _stopSpawning == false)
+        while (_enemySpawned < 3 && _stopSpawning == false)
 
         {
 
@@ -104,6 +112,7 @@ public class SpawnManager : MonoBehaviour
             if (getbottomEnemyRandomNumber == 1)
             {
                 Instantiate(_bottomEnemyPrefab, bottomEnemySpawnPos, Quaternion.identity);
+                _enemySpawned++;
             }
 
             int getAsteroidRandomNumber = (Random.Range(1, 10));
@@ -116,24 +125,26 @@ public class SpawnManager : MonoBehaviour
             if (getBomberRandomNumber == 1)
             {
                 Instantiate(_BomberPrefab, bomberSpawnPos, Quaternion.identity);
+                _enemySpawned++;
             }
 
             if (getAsteroidRandomNumber != 1)
             {
                 GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
-                _enemySpawned++;
                 CalculateRandomEnemyMovement();
                 newEnemy.transform.parent = _enemyContainer.transform;
+                _enemySpawned++;
             }
             yield return new WaitForSeconds(7.0f);
         }
-        if (_enemySpawned == 10)
+        if (_enemySpawned >= 3)
         {
-            _wave++;
-            _uiManager.UpdateWave(_wave);
-            _enemySpawned = 0;
             StopWave();
-            StopCoroutine(SpawnWave1Routine());
+            _wave++;
+            _enemySpawned = 0;
+           // StopCoroutine(SpawnWave1Routine());
+           // StopCoroutine(SpawnPowerupRoutine());
+            _uiManager.UpdateWave(_wave);
             yield return new WaitForSeconds(4.0f);
             StartCoroutine(SpawnWave2Routine());
         }
@@ -141,7 +152,9 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnWave2Routine()
     {
-        while (_enemySpawned < 20 && _stopSpawning == false)
+        _stopSpawning = false;
+        StartCoroutine(SpawnPowerupRoutine());
+        while (_enemySpawned <= 3 && _stopSpawning == false)
 
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-9, 9), 7, 0);
@@ -175,7 +188,7 @@ public class SpawnManager : MonoBehaviour
             }
             yield return new WaitForSeconds(4.0f);
         }
-        if (_enemySpawned == 20)
+        if (_enemySpawned >= 3)
         {
             _wave++;
             _uiManager.UpdateWave(_wave);
@@ -189,8 +202,10 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnWave3Routine()
     {
-        while (_enemySpawned < 30 && _stopSpawning == false)
+        _stopSpawning = false;
+        while (_enemySpawned < 3 && _stopSpawning == false)
         {
+            StartCoroutine(SpawnPowerupRoutine());
             Vector3 posToSpawn = new Vector3(Random.Range(-9, 9), 7, 0);
             Vector3 bomberSpawnPos = new Vector3(11, 4, 0);
             Vector3 bottomEnemySpawnPos = new Vector3(-9, 8, 0);
@@ -220,20 +235,78 @@ public class SpawnManager : MonoBehaviour
                 CalculateRandomEnemyMovement();
                 newEnemy.transform.parent = _enemyContainer.transform;
             }
-            yield return new WaitForSeconds(2.0f);
+            yield return new WaitForSeconds(4.0f);
         }
-        if (_enemySpawned == 30)
+        if (_enemySpawned >= 3)
         {
-            _wave++;
-            _uiManager.UpdateWave(_wave);
+            _uiManager.UpdateBossWave();
             _enemySpawned = 0;
+            StopWave();
             StopCoroutine(SpawnWave3Routine());
-            _uiManager.GameOverSequence();
+            yield return new WaitForSeconds(3f);
+            StartCoroutine(SpawnWaveBossStage());
         }
     }
 
+ /*  private void SpawnWaveBossStage()
+    {
+        Vector3 bossFightersPosToSpawn = new Vector3(Random.Range(-9, 9), 7, 0);
+        Vector3 bossPosToSpawn = new Vector3(0, 10, 0);
+        if (_bossCreated == false)
+        {
+            Instantiate(_bossPrefab, bossPosToSpawn, Quaternion.identity);
+            _bossAlive = true;
+            _bossCreated = true;
+        }
+        /* for (int i = 0; i >= 9; i++)
+         {
+             GameObject newEnemy = Instantiate(_bossFightersPrefab, bossFightersPosToSpawn, Quaternion.identity);
+             // _enemySpawned++;
+             newEnemy.transform.parent = _enemyContainer.transform;
+         }
+        
+        while (_bossFightersSpawned <= 9)
+         {
+             Instantiate(_bossFightersPrefab, bossFightersPosToSpawn, Quaternion.identity);
+             _bossFightersSpawned++;
+            break;
+         }
+    }
+ */
+  
+
+    IEnumerator SpawnWaveBossStage()
+    {
+        StartCoroutine(SpawnPowerupRoutine());
+        Vector3 bossPosToSpawn = new Vector3(0, 10, 0);
+        if (_bossCreated == false)
+        {
+            Instantiate(_bossPrefab, bossPosToSpawn, Quaternion.identity);
+            _bossAlive = true;
+            _bossCreated = true;
+        }
+        while (_bossAlive == true && _bossFightersSpawned < 5)
+        {
+            Vector3 bossFightersPosToSpawn = new Vector3(Random.Range(-9, 9), 7, 0);
+            Instantiate(_bossFightersPrefab, bossFightersPosToSpawn, Quaternion.identity);
+            _bossFightersSpawned++;
+            yield return new WaitForSeconds(2f);
+        }
+        if (_bossAlive == false)
+        {
+            StopCoroutine(SpawnWaveBossStage());
+            StopCoroutine(SpawnPowerupRoutine());
+            StopWave();
+            _uiManager.GameOverSequence();
+        }
+       
+    }
+
+
     void StopWave()
     {
+        _stopSpawning = true;
+
         var powerup = GameObject.FindGameObjectsWithTag("PowerUp");
         foreach (var PowerUp in powerup)
         {
@@ -263,6 +336,7 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnPowerupRoutine()
     {
+        _stopSpawning = false;
         while (_stopSpawning == false)
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-9, 9), 7, 0);
@@ -280,6 +354,7 @@ public class SpawnManager : MonoBehaviour
 
     void SpawnMissilePowerUp()
     {
+        _stopSpawning = false;
         int randomMissile = Random.Range(1, 10);
 
         if (randomMissile == 1 && _stopSpawning == false)
@@ -291,6 +366,7 @@ public class SpawnManager : MonoBehaviour
 
     void SpawnPenaltyPowerUp()
     {
+        _stopSpawning = false;
         int spawnRate;
         spawnRate = Random.Range(1, 5);
         float spawnX = Random.Range(-9, 9);

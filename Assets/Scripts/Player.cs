@@ -214,20 +214,6 @@ public class Player : MonoBehaviour
         {
             return;
         }
-       /* switch (_shieldPower)
-        {
-            case 2:
-                _shieldSprite.GetComponent<Renderer>().material.color = Color.green;
-                break;
-            case 1:
-                _shieldSprite.GetComponent<Renderer>().material.color = Color.red;
-                break;
-            case 0:
-                _shieldSprite.SetActive(false);
-                _isShieldActive = false;
-                break;
-        }
-       */
     }
 
     public void SpeedActive()
@@ -252,7 +238,6 @@ public class Player : MonoBehaviour
     public void Missiles()
     {
         _numberOfMissiles = 5;
-       // _uiManager.UpdateMissileAmmo(_missiles);
     }
 
     IEnumerator TripleShotPowerDownRoutine()

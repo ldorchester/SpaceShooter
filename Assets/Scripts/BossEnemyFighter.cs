@@ -2,26 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bomber : MonoBehaviour
+public class BossEnemyFighter : MonoBehaviour
 {
+    [SerializeField] private float _speed = 2f;
     private AudioSource _audioSource;
-    private Animator _anim;
     SpawnManager _spawnManager;
     private Player _player;
-    [SerializeField] private GameObject _bombPrefab;
+    private Animator _anim;
+    [SerializeField] private GameObject _laserPrefab;
     private float _fireRate = 3.0f;
     private float _canFire = -1f;
-    [SerializeField] private float _speed = 1f;
-    private bool _movingLeft;
+   // private int _randomMove;
 
     void Start()
     {
-        _movingLeft = true;
         if (_player != null)
         {
             _player = GameObject.Find("Player").GetComponent<Player>();
         }
-     
 
         _anim = GetComponent<Animator>();
         if (_anim == null)
@@ -36,49 +34,36 @@ public class Bomber : MonoBehaviour
         }
 
         _audioSource = GetComponent<AudioSource>();
-    }
 
+    }
 
     // Update is called once per frame
     void Update()
     {
         CalculateMovement();
-        DropBombs();
-
+        FireLasers();
     }
 
     //-----------------------------Custom Methods Below ------------------------------------------------
     void CalculateMovement()
     {
-        if (_movingLeft == true)
+        transform.Translate(new Vector3(0, -1, 0) * _speed * Time.deltaTime);
+
+        if (transform.position.y <= -6.5f)
         {
-            transform.Translate(Vector3.left * _speed * Time.deltaTime);
-        }
-        if (transform.position.x <= -10f)
-        {
-            _movingLeft = false;
-        }
-        if (_movingLeft == false)
-        {
-            transform.Translate(Vector3.right * _speed * Time.deltaTime);
-        }
-        if (transform.position.x >= 9f)
-        {
-            _movingLeft = true;
+            float xRandomRespawn = Random.Range(-9, 9);
+            transform.position = new Vector3(xRandomRespawn, 4.5f, 0);
         }
     }
 
-    void DropBombs()
+    void FireLasers()
     {
-       if (Time.time > _canFire)
-       {
-            if (this.gameObject != null)
-            {
-                _fireRate = Random.Range(1f, 3f);
-                _canFire = Time.time + _fireRate;
-                Instantiate(_bombPrefab, transform.position + new Vector3(0, -1f, 0), Quaternion.identity);
-            }
-       }
+        if (Time.time > _canFire)
+        {
+            _fireRate = Random.Range(1f, 3f);
+            _canFire = Time.time + _fireRate;
+            Instantiate(_laserPrefab, transform.position + new Vector3(0, -1, 0), Quaternion.identity);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -90,12 +75,22 @@ public class Bomber : MonoBehaviour
             _anim.SetTrigger("OnBomberDeath");
             _speed = 1;
             _player = GameObject.Find("Player").GetComponent<Player>();
-            _player.AddToScore(20);
+            _player.AddToScore(30);
             Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2f);
         }
 
-        //If Enemy Collides with Laser
+        if (other.tag == "Player")
+        {
+            _player = GameObject.Find("Player").GetComponent<Player>();
+            _player.AddToScore(30);
+            _player.Damage();
+            _anim.SetTrigger("OnBomberDeath");
+            _speed = 1;
+            _audioSource.Play();
+            Destroy(this.gameObject, 2f);
+        }
+       
         if (other.tag == "Laser")
         {
             Destroy(other.gameObject);
@@ -103,11 +98,9 @@ public class Bomber : MonoBehaviour
             _anim.SetTrigger("OnBomberDeath");
             _speed = 1;
             _player = GameObject.Find("Player").GetComponent<Player>();
-            _player.AddToScore(20);
+            _player.AddToScore(30);
             Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2f);
         }
     }
-
 }
-
