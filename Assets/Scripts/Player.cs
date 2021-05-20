@@ -279,7 +279,6 @@ public class Player : MonoBehaviour
         }
        if (_lives <= 0)
        {
-            _spawnManager.OnPlayerDeath();
             var powerup = GameObject.FindGameObjectsWithTag("PowerUp");
             foreach (var PowerUp in powerup)
             {

@@ -69,13 +69,11 @@ public class EnemyBoss : MonoBehaviour
         _turnSpeed = 0;
         _player = GameObject.Find("Player").GetComponent<Player>();
         _player.AddToScore(1000);
-        // GameObject.Find("BossExplosion1").GetComponent<Animator>();
-        //  GameObject.Find("BossExplosion1").GetComponent<AudioSource>();
-        // _anim.SetTrigger("OnBomberDeath");
-        // _audioSource.Play();
+        _anim.SetTrigger("OnShootUpDeath");
+        _audioSource.Play();
         _uiManager.YouWinSequence();
         yield return new WaitForSeconds(.75f);
-        Destroy(this.gameObject);
+        Destroy(this.gameObject, 2);
 
 
         var powerup = GameObject.FindGameObjectsWithTag("PowerUp");
@@ -88,40 +86,7 @@ public class EnemyBoss : MonoBehaviour
         {
             Destroy(BossEnemyFighters);
         }
-        // StartCoroutine(cameraShake.Shake(.2f, 4f));
-       // yield return new WaitForSeconds(8f);
     }
-/*
-    {
-            StartCoroutine(cameraShake.Shake(.15f, .4f));
-            _lives--;
-            _uiManager.UpdateLives(_lives);
-        }
-if (_lives <= 0)
-{
-    _spawnManager.OnPlayerDeath();
-    var powerup = GameObject.FindGameObjectsWithTag("PowerUp");
-    foreach (var PowerUp in powerup)
-    {
-        Destroy(PowerUp);
-    }
-    var enemyshootup = GameObject.FindGameObjectsWithTag("EnemyShootUp");
-    foreach (var EnemyShootUp in enemyshootup)
-    {
-        Destroy(EnemyShootUp);
-    }
-    var bomber = GameObject.FindGameObjectsWithTag("Bomber");
-    foreach (var Bomber in bomber)
-    {
-        Destroy(Bomber);
-    }
-    var enemy = GameObject.FindGameObjectsWithTag("Enemy");
-    foreach (var Enemy in enemy)
-    {
-        Destroy(Enemy);
-    }
-    _spawnManager.OnPlayerDeath();
-    Destroy(this.gameObject);
-*/
+
 
 }

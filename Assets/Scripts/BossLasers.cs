@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class BossLasers : MonoBehaviour
 {
-    
-
+    [SerializeField] private float _speed = 10.0f;
 
     void Update()
     {
-        transform.Translate(Vector3.down * 10 * Time.deltaTime);
+        transform.Translate(Vector3.down * _speed * Time.deltaTime);
 
         if (transform.position.y < -6.4f)
         {
@@ -19,7 +18,7 @@ public class BossLasers : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-       /* if (other.tag == "Player")
+        if (other.tag == "Player")
         {
             Player player = other.GetComponent<Player>();
 
@@ -29,25 +28,5 @@ public class BossLasers : MonoBehaviour
             }
             Destroy(this.gameObject);
         }
-       */
-
-        if (other.tag == "PowerUp")
-        {
-            Destroy(this.gameObject);
-            Destroy(other.gameObject);
-        }
-
-        if (other.tag == "MissilePowerUp")
-        {
-            Destroy(this.gameObject);
-            Destroy(other.gameObject);
-        }
-
-        if (other.tag == "TripleShot")
-        {
-            Destroy(this.gameObject);
-            Destroy(other.gameObject);
-        }
     }
-
 }

@@ -26,6 +26,7 @@ TagManager:
   - LeftBackBossWing
   - EnemyBoss
   - FinalExplosion
+  - BossLasers
   layers:
   - Default
   - TransparentFX

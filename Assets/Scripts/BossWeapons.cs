@@ -60,7 +60,7 @@ public class BossWeapons : MonoBehaviour
             {
                 _player.AddToScore(100);
                 _enemyBoss = transform.parent.gameObject.GetComponent<EnemyBoss>();
-                _anim.SetTrigger("OnBomberDeath");
+                _anim.SetTrigger("OnShootUpDeath");
                 _audioSource.Play();
                 _enemyBoss.WingsDestroyed();
                 Destroy(this.gameObject, 2f);
@@ -74,7 +74,7 @@ public class BossWeapons : MonoBehaviour
             {
                 _player.AddToScore(100);
                 _enemyBoss = transform.parent.gameObject.GetComponent<EnemyBoss>();
-                _anim.SetTrigger("OnBomberDeath");
+                _anim.SetTrigger("OnShootUpDeath");
                 _audioSource.Play();
                 _enemyBoss.WingsDestroyed();
                 Destroy(this.gameObject, 2f);

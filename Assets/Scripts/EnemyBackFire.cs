@@ -125,7 +125,7 @@ public class EnemyBackFire : MonoBehaviour
         {
             Destroy(other.gameObject);
             _audioSource.Play();
-            _anim.SetTrigger("OnEnemyDeath");
+            _anim.SetTrigger("OnShootUpDeath");
             Destroy(this.gameObject, 2f);
         }
 
@@ -133,21 +133,21 @@ public class EnemyBackFire : MonoBehaviour
         {
             Player player = other.transform.GetComponent<Player>();
             player.Damage();
-            _anim.SetTrigger("OnEnemyDeath");
+            _anim.SetTrigger("OnShootUpDeath");
             _speed = 0;
             _audioSource.Play();
-            Destroy(this.gameObject, 1f);
+            Destroy(this.gameObject, 2f);
         }
 
         if (other.tag == "Laser")
         {
             Destroy(other.gameObject);
-            _anim.SetTrigger("OnEnemyDeath");
+            _anim.SetTrigger("OnShootUpDeath");
             _speed = 0;
             _audioSource.Play();
 
             Destroy(GetComponent<Collider2D>());
-            Destroy(this.gameObject, 1f);
+            Destroy(this.gameObject, 2f);
         }
     }
 }

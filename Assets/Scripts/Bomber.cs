@@ -87,11 +87,10 @@ public class Bomber : MonoBehaviour
         {
             Destroy(other.gameObject);
             _audioSource.Play();
-            _anim.SetTrigger("OnBomberDeath");
+            _anim.SetTrigger("OnShootUpDeath");
             _speed = 1;
             _player = GameObject.Find("Player").GetComponent<Player>();
             _player.AddToScore(20);
-            Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2f);
         }
 
@@ -100,11 +99,10 @@ public class Bomber : MonoBehaviour
         {
             Destroy(other.gameObject);
             _audioSource.Play();
-            _anim.SetTrigger("OnBomberDeath");
+            _anim.SetTrigger("OnShootUpDeath");
             _speed = 1;
             _player = GameObject.Find("Player").GetComponent<Player>();
             _player.AddToScore(20);
-            Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2f);
         }
     }

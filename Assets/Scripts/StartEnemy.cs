@@ -8,6 +8,7 @@ public class StartEnemy : MonoBehaviour
     private SpawnManager _spawnManager;
     private Animator _anim;
     private AudioSource _audioSource;
+    private float _turnSpeed = 30f;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,19 +26,25 @@ public class StartEnemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(Vector3.forward * 30f * Time.deltaTime);
+        transform.Rotate(Vector3.forward * _turnSpeed* Time.deltaTime);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Laser")
         {
-            Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
             Destroy(other.gameObject);
-            _spawnManager.StartSpawning();
-            _audioSource.Play();
-            _anim.SetTrigger("OnEnemyDeath");
-            Destroy(this.gameObject, 2f);
+            StartCoroutine(StopStartSpin());
+            _anim.SetTrigger("OnShootUpDeath");
+            Destroy(this.gameObject, 2.5f);
         }
+    }
+
+    IEnumerator StopStartSpin()
+    {
+        yield return new WaitForSeconds(.5f);
+        _audioSource.Play();
+        yield return new WaitForSeconds(1.9f);
+        _spawnManager.StartSpawning();
     }
 }

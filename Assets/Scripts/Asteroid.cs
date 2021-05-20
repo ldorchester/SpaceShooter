@@ -6,12 +6,13 @@ public class Asteroid : MonoBehaviour
 {
     [SerializeField] private float _rotateSpeed = 150f;
     private float _speed = 3;
-    [SerializeField] private GameObject _explosionPrefab;
     private AudioSource _audioSource;
+    private Animator _anim;
 
     void Start()
     {
         _audioSource = GetComponent<AudioSource>();
+        _anim = GetComponent<Animator>();
     }
 
     void Update()
@@ -29,34 +30,35 @@ public class Asteroid : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Laser")
-        {
-            Destroy(other.gameObject);
-            Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
-            _audioSource.Play();
-            Destroy(this.gameObject, .25f);
-        }
-
         if (other.tag == "Missile")
         {
             Destroy(other.gameObject);
-            Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
             _audioSource.Play();
-            Destroy(this.gameObject);
-        }    
+            _anim.SetTrigger("OnShootUpDeath");
+            Destroy(this.gameObject, 1.5f);
+        }
 
-        if (other.CompareTag("Player"))
+        if (other.tag == "Player")
         {
             Player player = other.transform.GetComponent<Player>();
-            if (player != null)
-            {
-                player.Damage();
-                Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
-                _audioSource.Play();
-                Destroy(this.gameObject);
-            }
+            player.Damage();
+            _anim.SetTrigger("OnShootUpDeath");
+            _speed = 0;
+            _audioSource.Play();
+            Destroy(this.gameObject, 1.5f);
+        }
+
+        if (other.tag == "Laser")
+        {
+            Destroy(other.gameObject);
+            _anim.SetTrigger("OnShootUpDeath");
+            _speed = 0;
+            _audioSource.Play();
+
+            Destroy(GetComponent<Collider2D>());
+            Destroy(this.gameObject, 1.5f);
         }
     }
 }

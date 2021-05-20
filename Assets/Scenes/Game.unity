@@ -1096,8 +1096,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 80fba5ece7697c44eacc036539c1b552, type: 3}
   - {fileID: 21300000, guid: 482c8e4c0346b704aa5f1760c3c989d5, type: 3}
   - {fileID: 21300000, guid: 9fe6f40efddf0b64fb68a3382b14a4db, type: 3}
-  - {fileID: 21300000, guid: 9fe6f40efddf0b64fb68a3382b14a4db, type: 3}
-  - {fileID: 21300000, guid: 9fe6f40efddf0b64fb68a3382b14a4db, type: 3}
   _livesImg: {fileID: 1657601068}
   _gameOverText: {fileID: 727355317}
   _youWinText: {fileID: 1187282906}
@@ -1524,6 +1522,63 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &899228801
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2022347525427140345, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
+      propertyPath: m_Name
+      value: Enemy_Boss
+      objectReference: {fileID: 0}
+    - target: {fileID: 2022347525427140347, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.61
+      objectReference: {fileID: 0}
+    - target: {fileID: 2022347525427140347, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 2022347525427140347, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2022347525427140347, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2022347525427140347, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2022347525427140347, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2022347525427140347, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2022347525427140347, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2022347525427140347, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2022347525427140347, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2022347525427140347, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1711,6 +1766,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemySpawned: 0
+  _bossFightersSpawned: 0
   _wave: 0
   _enemyPrefab: {fileID: 4616411458846572420, guid: 96d9e40e752305347b82f812bdaa2f16, type: 3}
   _bossFightersPrefab: {fileID: 7891072898844588233, guid: d2b8227243526c141a599dd5f7c34af0, type: 3}
@@ -3121,7 +3177,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2002436043}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.8, y: 3.6, z: 0}
+  m_LocalPosition: {x: 1.38, y: 3.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -3137,8 +3193,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: cb4f2f0f8f9eb9741bdf6b15e98136e9, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -3233,7 +3289,7 @@ Animator:
   m_GameObject: {fileID: 2002436043}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e76e56098f9fd5b4a82e4622346e7dc4, type: 2}
+  m_Controller: {fileID: 9100000, guid: 80a29eed58a1a934792955444800dea9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

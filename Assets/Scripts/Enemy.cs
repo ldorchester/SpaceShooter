@@ -60,10 +60,10 @@ public class Enemy : MonoBehaviour
         FireLasers();
     }
     private void FixedUpdate()
-   {
+    {
         MoveEnemy(_movement);
     }
-
+   
     //-----------------------------Custom Methods Below ------------------------------------------------
     bool CanSeePowerup(float distance)
     {
@@ -112,10 +112,10 @@ public class Enemy : MonoBehaviour
                     Vector3 direction = _player.transform.position - transform.position;
                     direction.Normalize();
                     _movement = direction;
+                    MoveEnemy(_movement);
                 }
                 break;
             default:
-                transform.position = new Vector3(0, 0, 0);
                 break;
         }
 
@@ -133,12 +133,12 @@ public class Enemy : MonoBehaviour
             _fireRate = 1f;
             _canFire = Time.time + _fireRate;
             GameObject enemyLaser = Instantiate(_laserPrefab, transform.position + new Vector3(0, -0.2f, 0), Quaternion.identity);
-           // Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+            Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
 
-           // for (int i = 0; i < lasers.Length; i++)
-          //  {
-          //      lasers[i].AssignEnemyLaser();
-          //  }
+            for (int i = 0; i < lasers.Length; i++)
+            {
+                lasers[i].AssignEnemyLaser();
+            }
         }
     }
     void FireLasers()
@@ -223,11 +223,9 @@ public class Enemy : MonoBehaviour
             Destroy(other.gameObject);
             _player = GameObject.Find("Player").GetComponent<Player>();
             _player.AddToScore(10);
-
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
             _audioSource.Play();
-
             Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2f);
         }
@@ -235,7 +233,7 @@ public class Enemy : MonoBehaviour
 
     IEnumerator ChangeShieldActiveDelay()
     {
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.3f);
         _isShieldActive = false;
     }
 

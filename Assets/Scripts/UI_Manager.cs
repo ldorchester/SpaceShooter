@@ -78,7 +78,11 @@ public class UI_Manager : MonoBehaviour
         {
             GameOverSequence();
         }
-        _livesImg.sprite = _liveSprites[currentlives];
+        else
+        {
+            _livesImg.sprite = _liveSprites[currentlives];
+        }
+        
     }
 
     public void GameOverSequence()

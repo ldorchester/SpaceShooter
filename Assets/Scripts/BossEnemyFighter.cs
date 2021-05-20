@@ -12,7 +12,6 @@ public class BossEnemyFighter : MonoBehaviour
     [SerializeField] private GameObject _laserPrefab;
     private float _fireRate = 3.0f;
     private float _canFire = -1f;
-   // private int _randomMove;
 
     void Start()
     {
@@ -56,7 +55,7 @@ public class BossEnemyFighter : MonoBehaviour
         }
     }
 
-    void FireLasers()
+     void FireLasers()
     {
         if (Time.time > _canFire)
         {
@@ -65,6 +64,7 @@ public class BossEnemyFighter : MonoBehaviour
             Instantiate(_laserPrefab, transform.position + new Vector3(0, -1, 0), Quaternion.identity);
         }
     }
+ 
 
     void OnTriggerEnter2D(Collider2D other)
     {
