@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _speed = 4f;
+    private float _bottomSpeed = 3f;
     private int _randomMove;
     private int _agroRange = 15;
     private AudioSource _audioSource;
@@ -20,12 +21,19 @@ public class Enemy : MonoBehaviour
     private int _randomShieldNumber;
     private Rigidbody2D rb;
     private Vector2 _movement;
+    private bool _isMoving;
+    private bool _movingRight;
+    private bool _movingLeft;
+    
 
     void Start()
     {
         rb = this.GetComponent<Rigidbody2D>();
         _isShieldActive = false;
         _shieldSprite.SetActive(false);
+        _isMoving = true;
+        _movingRight = false;
+        _movingLeft = false;
         CheckForShield();
 
         if (_player != null)
@@ -98,22 +106,24 @@ public class Enemy : MonoBehaviour
         switch (_randomMove)
         {
             case 0:
-                transform.Translate(new Vector3(0, -1, 0) * _speed * Time.deltaTime);
+               transform.Translate(new Vector3(0, -1, 0) * _speed * Time.deltaTime);
                 break;
             case 1:
-                transform.Translate(new Vector3(1, -1, 0) * _speed * Time.deltaTime);
+               transform.Translate(new Vector3(1, -1, 0) * _speed * Time.deltaTime);
                 break;
             case 2:
                 transform.Translate(new Vector3(-1, -1, 0) * _speed * Time.deltaTime);
                 break;
             case 3:
-                if (_player != null)
+                CalculateMovementDownStopEnemy();
+                /*if (_player != null)
                 {
                     Vector3 direction = _player.transform.position - transform.position;
                     direction.Normalize();
                     _movement = direction;
                     MoveEnemy(_movement);
                 }
+                */
                 break;
             default:
                 break;
@@ -126,6 +136,55 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    void CalculateMovementDownStopEnemy()
+    {
+        if (_isMoving == true)
+        {
+            transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        }
+        if (transform.position.y <= 2f)
+        {
+            _isMoving = false;
+        }
+        if (_isMoving == false)
+        {
+            StartCoroutine(WaitAndThenMove());
+        }
+    }
+
+    IEnumerator WaitAndThenMove()
+    {
+        yield return new WaitForSeconds(2f);
+        if (transform.position.x >= 6.28)
+        {
+            _movingLeft = true;
+        }
+        if (transform.position.x <= -9f)
+        {
+            { _movingRight = true; }
+        }
+        CalculateBottomMovement();
+    }
+
+    void CalculateBottomMovement()
+    {
+        if (_movingRight == true)
+        {
+            transform.Translate(Vector3.right * _bottomSpeed * Time.deltaTime);
+        }
+        if (transform.position.x >= 6.28f)
+        {
+            _movingRight = false;
+        }
+        if (_movingRight == false)
+        {
+            transform.Translate(Vector3.left * _bottomSpeed * Time.deltaTime);
+        }
+        if (transform.position.x <= -9f)
+        {
+            _movingRight = true;
+        }
+    }
     void FireLasersAtPowerup()
     {
         if (Time.time > _canFire)
@@ -189,6 +248,7 @@ public class Enemy : MonoBehaviour
             _player.AddToScore(10);
             _audioSource.Play();
             _anim.SetTrigger("OnEnemyDeath");
+            _spawnManager.NumberEnemyDestroyed();
             Destroy(this.gameObject, 2f);
         }
 
@@ -208,6 +268,7 @@ public class Enemy : MonoBehaviour
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
             _audioSource.Play();
+            _spawnManager.NumberEnemyDestroyed();
             Destroy(this.gameObject, 2f);
         }
    
@@ -226,6 +287,7 @@ public class Enemy : MonoBehaviour
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
             _audioSource.Play();
+            _spawnManager.NumberEnemyDestroyed();
             Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2f);
         }

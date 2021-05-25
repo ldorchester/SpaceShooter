@@ -68,7 +68,6 @@ public class UI_Manager : MonoBehaviour
 
     public void UpdateBossWave()
     {
-      //  _wave = bosswave;
         StartCoroutine(ShowBossWave());
     }
 
@@ -82,7 +81,6 @@ public class UI_Manager : MonoBehaviour
         {
             _livesImg.sprite = _liveSprites[currentlives];
         }
-        
     }
 
     public void GameOverSequence()
@@ -135,7 +133,7 @@ public class UI_Manager : MonoBehaviour
 
     public IEnumerator ShowBossWave()
     {
-        _waveText.text = "Here Comes Boss Ship!";
+        _waveText.text = "Here comes the main ship!";
         _waveText.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(2f);

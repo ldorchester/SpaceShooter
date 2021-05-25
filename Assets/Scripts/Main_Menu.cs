@@ -10,4 +10,9 @@ public class Main_Menu : MonoBehaviour
         //load the game scene
         SceneManager.LoadScene(1);
     }
+
+    public void LoadInstructions()
+    {
+        SceneManager.LoadScene(2);
+    }
 }

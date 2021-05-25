@@ -82,9 +82,12 @@ public class BossEnemyFighter : MonoBehaviour
 
         if (other.tag == "Player")
         {
+            if (_player != null)
+            {
             _player = GameObject.Find("Player").GetComponent<Player>();
             _player.AddToScore(30);
             _player.Damage();
+            }
             _anim.SetTrigger("OnBomberDeath");
             _speed = 1;
             _audioSource.Play();
@@ -97,8 +100,11 @@ public class BossEnemyFighter : MonoBehaviour
             _audioSource.Play();
             _anim.SetTrigger("OnBomberDeath");
             _speed = 1;
-            _player = GameObject.Find("Player").GetComponent<Player>();
-            _player.AddToScore(30);
+            if (_player != null)
+            {
+                _player = GameObject.Find("Player").GetComponent<Player>();
+                _player.AddToScore(30);
+            }
             Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2f);
         }

@@ -91,6 +91,7 @@ public class Bomber : MonoBehaviour
             _speed = 1;
             _player = GameObject.Find("Player").GetComponent<Player>();
             _player.AddToScore(20);
+            _spawnManager.NumberEnemyDestroyed();
             Destroy(this.gameObject, 2f);
         }
 
@@ -103,6 +104,7 @@ public class Bomber : MonoBehaviour
             _speed = 1;
             _player = GameObject.Find("Player").GetComponent<Player>();
             _player.AddToScore(20);
+            _spawnManager.NumberEnemyDestroyed();
             Destroy(this.gameObject, 2f);
         }
     }

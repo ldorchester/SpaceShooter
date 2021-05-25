@@ -16,6 +16,7 @@ public class EnemyBackFire : MonoBehaviour
     [SerializeField] private GameObject _laserPrefab;
     private AudioSource _audioSource;
     private Animator _anim;
+    SpawnManager _spawnManager;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +25,12 @@ public class EnemyBackFire : MonoBehaviour
         if (_anim == null)
         {
             Debug.LogError("The Animator is NULL");
+        }
+
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
+        if (_spawnManager == null)
+        {
+            Debug.LogError("The Spawn Manager is NULL.");
         }
 
         _audioSource = GetComponent<AudioSource>();
@@ -126,6 +133,7 @@ public class EnemyBackFire : MonoBehaviour
             Destroy(other.gameObject);
             _audioSource.Play();
             _anim.SetTrigger("OnShootUpDeath");
+            _spawnManager.NumberEnemyDestroyed();
             Destroy(this.gameObject, 2f);
         }
 
@@ -136,6 +144,7 @@ public class EnemyBackFire : MonoBehaviour
             _anim.SetTrigger("OnShootUpDeath");
             _speed = 0;
             _audioSource.Play();
+            _spawnManager.NumberEnemyDestroyed();
             Destroy(this.gameObject, 2f);
         }
 
@@ -145,7 +154,7 @@ public class EnemyBackFire : MonoBehaviour
             _anim.SetTrigger("OnShootUpDeath");
             _speed = 0;
             _audioSource.Play();
-
+            _spawnManager.NumberEnemyDestroyed();
             Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2f);
         }

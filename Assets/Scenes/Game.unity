@@ -1522,63 +1522,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1001 &899228801
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2022347525427140345, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
-      propertyPath: m_Name
-      value: Enemy_Boss
-      objectReference: {fileID: 0}
-    - target: {fileID: 2022347525427140347, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.61
-      objectReference: {fileID: 0}
-    - target: {fileID: 2022347525427140347, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 7.17
-      objectReference: {fileID: 0}
-    - target: {fileID: 2022347525427140347, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2022347525427140347, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2022347525427140347, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2022347525427140347, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2022347525427140347, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2022347525427140347, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
-      propertyPath: m_RootOrder
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 2022347525427140347, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2022347525427140347, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2022347525427140347, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 8195b6bd3536f204bb3de856dd14b5b1, type: 3}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1765,9 +1708,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e22284592fc1624e82b2587aa10557a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemySpawned: 0
   _bossFightersSpawned: 0
   _wave: 0
+  _enemyDestroyed: 0
   _enemyPrefab: {fileID: 4616411458846572420, guid: 96d9e40e752305347b82f812bdaa2f16, type: 3}
   _bossFightersPrefab: {fileID: 7891072898844588233, guid: d2b8227243526c141a599dd5f7c34af0, type: 3}
   _bottomEnemyPrefab: {fileID: 4802240930564319121, guid: c40d48847713f7f42a7b520e8e7121bf, type: 3}
